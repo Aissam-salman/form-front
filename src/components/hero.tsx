@@ -14,7 +14,7 @@ const Feature = ({title, description, children}: FeatureProps) => {
     return (
         <div className="flex flex-col gap-1 p-2">
             <span className="font-medium text-lg">{title}</span>
-            <span className="text-secondary w-[227px]" >
+            <span className="dark:text-secondary  w-[227px]" >
                 {description}
                 {children}
             </span>
@@ -28,13 +28,13 @@ const Hero = () => {
 
     return (
         <div className="flex flex-col items-center justify-center gap-6">
-            <h1 className="font-extrabold text-5xl pt-20 pb-16">Remplie ton formulaire simplement</h1>
-            <Card className="p-6">
-                <CardContent className="flex flex-row gap-6">
-                    <div className="relative overflow-hidden bg-white rounded-lg">
+            <h1 className="font-extrabold text-center text-xl sm:text-3xl md:text-5xl pt-20 sm:pt-12 pb-12">Remplie ton formulaire simplement</h1>
+            <Card className="sm:p-2 md:p-6">
+                <CardContent className="flex sm:flex-row sm:gap-6">
+                    <div className="relative overflow-hidden bg-white rounded-lg hidden sm:block">
                         <img className="w-64" src={appImageHero} alt="illustration app"/>
                     </div>
-                    <div className="flex flex-col gap-3 relative">
+                    <div className="flex flex-col relative">
                         <Feature title={"Simple et Rapide"}>
                             Utilise la commande <kbd className="pointer-events-none items-center h-5 select-none
                             rounded border bg-muted mx-1 align-middle px-1.5 py-0.5 font-mono text-xs font-bold text-muted-foreground
@@ -45,11 +45,11 @@ const Hero = () => {
                         <Feature title={"Génèration de PDF"} description={"Partage simplement tes documents"}/>
                     </div>
                 </CardContent>
-
             </Card>
 
             <Button
                 size="lg"
+                className="my-12 sm:mt-12"
                 //login or signup
                 onClick={() => {}}
             >
