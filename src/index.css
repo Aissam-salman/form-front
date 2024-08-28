@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body, :root {
+    height: 100%;
+}
 
 @layer base {
   :root {
@@ -68,4 +71,11 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+
+.font-jim-logo {
+  font-family: "Jim Nightshade", cursive;
+  font-weight: 400;
+  font-style: normal;
 }

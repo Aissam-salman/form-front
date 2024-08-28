@@ -1,15 +1,17 @@
-import {ModeToggle} from "@/components/mode-toggle.tsx";
+import Navbar from "@/components/navbar.tsx";
+import Hero from "@/components/hero.tsx";
+import Footer from "@/components/footer.tsx";
+
 
 const App = () => {
-
   return (
-      <>
-          <div className="bg-background"/>
-
-          <h1 className="text-4xl font-bold text-pink-950">Forme</h1>
-
-          <ModeToggle />
-      </>
+    <div className="bg-background flex min-h-screen flex-col overflow-y-auto">
+        <Navbar />
+        <main className="flex-1 h-full overflow-y-auto">
+            <Hero />
+        </main>
+        <Footer />
+    </div>
   )
 }
 
