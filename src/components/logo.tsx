@@ -1,7 +1,12 @@
+import {cn} from "@/lib/utils.ts";
 
-const Logo = () => {
+interface LogoProps {
+    className?: string;
+}
+
+const Logo = ({className}: LogoProps) => {
     return (
-        <div className="font-jim-logo text-6xl p-4">
+        <div className={cn("font-jim-logo text-6xl p-4", className)}>
             L
         </div>
     );

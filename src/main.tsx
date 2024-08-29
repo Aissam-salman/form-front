@@ -4,7 +4,10 @@ import App from './App.tsx'
 import './index.css'
 import {ThemeProvider} from "@/components/theme-provider.tsx";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import Hero from './components/hero.tsx';
+import {LoginPage} from "@/page/login.page.tsx";
+import {SignupPage} from "@/page/signup.page.tsx";
+import CandidatePage from "@/page/candidate.page.tsx";
+import ForgotPage from "@/page/forgot.page.tsx";
 
 
 const router = createBrowserRouter([
@@ -13,8 +16,20 @@ const router = createBrowserRouter([
         element: <App />
     },
     {
-        path: "/rou",
-        element: <Hero />
+        path: "/login",
+        element: <LoginPage />
+    },
+    {
+        path: "/forgot-password",
+        element: <ForgotPage />
+    },
+    {
+        path: "/signup",
+        element: <SignupPage />
+    },
+    {
+        path: "/candidate/:candidateId",
+        element: <CandidatePage />
     }
 ])
 
