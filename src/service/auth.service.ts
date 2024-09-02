@@ -4,11 +4,11 @@ import {AuthRegister} from "@/dto/AuthRegister.ts";
 
 class AuthService {
     login(data: AuthLogin) {
-        return API.post("/login",data)
+        return API.post("auth/login",data)
     }
 
     signup(data: AuthRegister) {
-        return API.post("/signup",data)
+        return API.post("auth/signup",data)
     }
 }
 
