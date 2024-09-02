@@ -10,6 +10,9 @@ import z from "zod";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import AuthService from "@/service/auth.service.ts";
+import {toast, Toaster} from "sonner";
+import {useAuthStore} from "@/hooks/use-auth-store.ts";
+import {useNavigate} from "react-router-dom";
 
 const RegisterSchema = z.object({
     firstname: z.string({
@@ -39,25 +42,32 @@ export function SignupPage() {
         resolver: zodResolver(RegisterSchema),
     });
 
+    const setToken = useAuthStore((state) => state.setToken);
+
+    const navigate = useNavigate();
 
 
 
-    const handleSignup = (data: z.infer<typeof RegisterSchema>) => {
+    const handleSignup = async (data: z.infer<typeof RegisterSchema>) => {
+        console.log(data)
+        try {
+            const response = await AuthService.signup(data);
+            if (response.data.token) {
+                setToken(response.data.token);
+                toast.success("New account successfully.");
+            }
 
-        AuthService.signup(data)
-            .then(resp => {
-                console.log(resp)
-                // redirect to page appropriate
-            }).catch(err => {
-            console.log(err)
-            // show err, in DOM
-        })
+        } catch (error) {
+            toast.error("Failed to create account. " + error);
+        }
+        //TODO: need Id from backend
+
+        // setTimeout(() => {
+        //     navigate(`/candidate/${candidateId}`)
+        // },1000)
+
     }
 
-
-    // state for isConnected ??   redirect to page => candidatepage
-    // state isConnected global, i need for all, and token register
-    // zustand ?
 
     return (
         <div className="w-full min-h-screen flex flex-col relative">
@@ -177,6 +187,7 @@ export function SignupPage() {
                 </Card>
             </div>
             <img className="absolute bottom-2 left-5" width={100} src={afpa} alt="Logo afpa"/>
+            <Toaster />
         </div>
     )
 }
