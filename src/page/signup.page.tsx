@@ -40,6 +40,14 @@ export function SignupPage() {
 
     const form = useForm<z.infer<typeof RegisterSchema>>({
         resolver: zodResolver(RegisterSchema),
+        defaultValues: {
+            firstname: "",
+            lastname: "",
+            email: "",
+            password: "",
+            phone_number: "",
+            role: "",
+        },
     });
 
     const setToken = useAuthStore((state) => state.setToken);
@@ -47,24 +55,22 @@ export function SignupPage() {
     const navigate = useNavigate();
 
 
-
     const handleSignup = async (data: z.infer<typeof RegisterSchema>) => {
-        console.log(data)
         try {
             const response = await AuthService.signup(data);
+
+
             if (response.data.token) {
                 setToken(response.data.token);
                 toast.success("New account successfully.");
             }
 
+            setTimeout(() => navigate(`/login`),3000)
+
         } catch (error) {
             toast.error("Failed to create account. " + error);
         }
         //TODO: need Id from backend
-
-        // setTimeout(() => {
-        //     navigate(`/candidate/${candidateId}`)
-        // },1000)
 
     }
 
@@ -187,7 +193,7 @@ export function SignupPage() {
                 </Card>
             </div>
             <img className="absolute bottom-2 left-5" width={100} src={afpa} alt="Logo afpa"/>
-            <Toaster />
+            <Toaster/>
         </div>
     )
 }
