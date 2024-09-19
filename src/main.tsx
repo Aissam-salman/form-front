@@ -1,5 +1,5 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import {StrictMode} from 'react'
+import {createRoot} from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 import {ThemeProvider} from "@/components/provider/theme-provider.tsx";
@@ -8,6 +8,7 @@ import {LoginPage} from "@/page/login.page.tsx";
 import {SignupPage} from "@/page/signup.page.tsx";
 import CandidatePage from "@/page/candidate.page.tsx";
 import ForgotPage from "@/page/forgot.page.tsx";
+import DashboardAdminPage from "@/page/dashboard-admin.page.tsx";
 
 
 const router = createBrowserRouter([
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
     {
         path: "/candidate/:candidateId",
         element: <CandidatePage />
+    },
+    {
+        path: "/admin",
+        element: <DashboardAdminPage />
     }
 ])
 

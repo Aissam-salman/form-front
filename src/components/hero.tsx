@@ -2,6 +2,8 @@ import {Card, CardContent} from "@/components/ui/card"
 import {ReactNode} from "react";
 import appImageHero from "../../public/illu.jpg";
 import {Button} from "@/components/ui/button.tsx";
+import {useNavigate} from "react-router-dom";
+import {useAuthStore} from "@/hooks/use-auth-store.ts";
 
 
 interface FeatureProps {
@@ -25,6 +27,18 @@ const Feature = ({title, description, children}: FeatureProps) => {
 
 const Hero = () => {
 
+    const navigate = useNavigate();
+
+    const isConnected = useAuthStore((state) => state.isConnected);
+    const id = useAuthStore((state) => state.id);
+
+    const handleConnect = () => {
+        if (isConnected) {
+            navigate(`/candidate/${id}`)
+        } else {
+            navigate(`/login`)
+        }
+    }
 
     return (
         <div className="flex flex-col items-center justify-center gap-6">
@@ -51,7 +65,7 @@ const Hero = () => {
                 size="lg"
                 className="my-12 sm:mt-12"
                 //login or signup
-                onClick={() => {}}
+                onClick={handleConnect}
             >
                 Créer un formulaire
             </Button>

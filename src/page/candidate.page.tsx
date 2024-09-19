@@ -7,6 +7,7 @@ const CandidatePage = () => {
     const token = useAuthStore((state) => state.token);
     const isConnected = useAuthStore((state) => state.isConnected);
 
+    const role = useAuthStore((state) => state.role);
 
     return (
         <div>
@@ -18,6 +19,9 @@ const CandidatePage = () => {
                     <span>
                     token: {token}
                 </span>
+                    <div>
+                        Mon role est <span>{role}</span>
+                    </div>
                 </>
             ) : "ceci est la page Candidat"}
         </div>

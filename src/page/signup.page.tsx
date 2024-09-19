@@ -65,7 +65,7 @@ export function SignupPage() {
                 toast.success("New account successfully.");
             }
 
-            setTimeout(() => navigate(`/login`),3000)
+            setTimeout(() => navigate(`/login`), 2000)
 
         } catch (error) {
             toast.error("Failed to create account. " + error);
@@ -75,6 +75,7 @@ export function SignupPage() {
     }
 
 
+    //TODO: disable creat admin
     return (
         <div className="w-full min-h-screen flex flex-col relative">
             <Navbar/>

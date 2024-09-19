@@ -19,6 +19,8 @@ import {
 } from "@/components/ui/form.tsx";
 import AuthService from "@/service/auth.service.ts";
 import {toast} from "sonner"
+import {Toaster} from "@/components/ui/sonner.tsx";
+import {Role} from "@/types/Role.ts";
 
 const LoginSchema = z.object({
     email: z.string({
@@ -37,29 +39,52 @@ export const LoginPage = () => {
         }
     });
 
+    //TODO: add verif isConnected before & redirect to home if connected
 
     const setToken = useAuthStore((state) => state.setToken);
     const setId = useAuthStore((state) => state.setId);
+    const setRole = useAuthStore((state) => state.setRole);
 
 
     const navigate = useNavigate();
 
+    const handleRedirect = ({id, role}: { id: number, role: Role }) => {
+        switch (role) {
+            case Role.ADMIN:
+                navigate(`/admin`);
+                break;
+            case Role.FORMER:
+                navigate(`/former/${id}`)
+                break;
+            case Role.CANDIDATE:
+                navigate(`/candidate/${id}`)
+                break;
+            default:
+                throw new Error("Role undefined")
+        }
+    }
+
     const handleLogin = async (data: z.infer<typeof LoginSchema>) => {
+
         try {
             const response = await AuthService.login(data);
 
-            if(response.data.token && response.data.id) {
+            console.log(response)
+
+            if (response.data.token && response.data.id && response.data.role) {
                 setToken(response.data.token);
                 setId(response.data.id)
+                setRole(response.data.role)
                 toast.success("Logged in successfully.");
             }
 
-            setTimeout(() => navigate(`/candidate/${response.data.id}`),3000)
+            setTimeout(() => handleRedirect({id: response.data.id, role: response.data.role}), 1000)
         } catch (error) {
             toast.error("Failed to login. " + error);
         }
 
     }
+
 
     return (
         <div className="w-full lg:grid lg:grid-cols-2 min-h-screen relative overflow-y-auto">
@@ -137,6 +162,7 @@ export const LoginPage = () => {
             <div className="absolute left-5 bottom-2">
                 <ModeToggle/>
             </div>
+            <Toaster/>
         </div>
     )
 }

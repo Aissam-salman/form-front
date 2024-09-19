@@ -33,6 +33,8 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
+//TODO: modify logic for change password after send email confirmation with link
+
 const FormSchema = z.object({
   email: z
     .string({
