@@ -35,6 +35,10 @@ const router = createBrowserRouter([
     {
         path: "/admin",
         element: <DashboardAdminPage />
+    },
+    {
+        path: "/former/:formerId",
+        element: <h1>Former page</h1>
     }
 ])
 

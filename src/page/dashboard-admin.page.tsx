@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {BellIcon, BookIcon, BookOpenIcon, FileTextIcon, HomeIcon, Settings2Icon, UsersIcon} from "lucide-react";
 import {Button} from "@/components/ui/button.tsx";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
@@ -6,9 +6,14 @@ import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Tabs, TabsContent} from "@/components/ui/tabs.tsx";
 import Logo from "@/components/logo.tsx";
+import DataTable from "@/components/data-table.tsx";
+import {ColumnDef} from "@tanstack/react-table"
+import {Candidate} from "@/types/Candidate.ts";
+import {Client} from "@stomp/stompjs";
 
 const DashboardAdminPage = () => {
     const [activeTab, setActiveTab] = useState("candidats")
+    const [candidates, setCandidates] = useState<Candidate[]>([]);
 
     const menuItems = [
         { id: "candidats", label: "Candidats", icon: UsersIcon },
@@ -17,6 +22,55 @@ const DashboardAdminPage = () => {
         { id: "centers", label: "Centers", icon: HomeIcon },
         { id: "forms", label: "Forms", icon: FileTextIcon },
     ]
+
+    const columns: ColumnDef<Candidate>[] = [
+        {
+            accessorKey: "id",
+            header: "Identifiant",
+        },
+        {
+            accessorKey: "firstname",
+            header: "First Name",
+        },
+        {
+            accessorKey: "lastname",
+            header: "Last Name",
+        },
+        {
+            accessorKey: "email",
+            header: "Email",
+        },
+        {
+            accessorKey: "phone_number",
+            header: "Phone number",
+        }
+    ];
+
+    useEffect(() => {
+        const client = new Client({
+            brokerURL: 'ws://localhost:8081/ws',
+            onConnect: () => {
+                console.log("Connected to WebSocket");
+                client.subscribe("/topic/candidates", (message) => {
+                    const candidateList = JSON.parse(message.body);
+                    setCandidates(candidateList);
+                });
+
+                client.publish({ destination: '/app/candidates' });
+            },
+            onDisconnect: () => {
+                console.log("Disconnected from WebSocket");
+            },
+            debug: (str) => {
+                console.log(str);
+            },
+        });
+
+        client.activate();
+
+        return () => { client.deactivate(); };
+    }, []);
+
 
     return (
         <div className="flex h-screen bg-gray-100">
@@ -73,6 +127,7 @@ const DashboardAdminPage = () => {
                                         <Label htmlFor="search-users">Rechercher un candidat</Label>
                                         <Input id="search-users" placeholder="Search by name or email..." />
                                     </div>
+                                    <DataTable columns={columns} data={candidates} />
                                     {/* Add user list or table component here */}
                                 </CardContent>
                             </Card>

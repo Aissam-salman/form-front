@@ -4,6 +4,7 @@ import appImageHero from "../../public/illu.jpg";
 import {Button} from "@/components/ui/button.tsx";
 import {useNavigate} from "react-router-dom";
 import {useAuthStore} from "@/hooks/use-auth-store.ts";
+import {Role} from "@/types/Role.ts";
 
 
 interface FeatureProps {
@@ -16,7 +17,7 @@ const Feature = ({title, description, children}: FeatureProps) => {
     return (
         <div className="flex flex-col gap-1 p-2">
             <span className="font-medium text-lg">{title}</span>
-            <span className="dark:text-secondary  w-[227px]" >
+            <span className="dark:text-secondary  w-[227px]">
                 {description}
                 {children}
             </span>
@@ -31,10 +32,23 @@ const Hero = () => {
 
     const isConnected = useAuthStore((state) => state.isConnected);
     const id = useAuthStore((state) => state.id);
+    const role = useAuthStore((state) => state.role);
 
     const handleConnect = () => {
         if (isConnected) {
-            navigate(`/candidate/${id}`)
+            switch (role) {
+                case Role.ADMIN:
+                    navigate("/admin");
+                    break;
+                case Role.CANDIDATE:
+                    navigate(`/candidate/${id}`)
+                    break;
+                case Role.FORMER:
+                    navigate(`/former/${id}`)
+                    break;
+                default:
+                    throw new Error("Role undefined")
+            }
         } else {
             navigate(`/login`)
         }
@@ -42,7 +56,8 @@ const Hero = () => {
 
     return (
         <div className="flex flex-col items-center justify-center gap-6">
-            <h1 className="font-extrabold text-center text-xl sm:text-3xl md:text-5xl pt-20 sm:pt-12 pb-12">Remplie ton formulaire simplement</h1>
+            <h1 className="font-extrabold text-center text-xl sm:text-3xl md:text-5xl pt-20 sm:pt-12 pb-12">Remplie ton
+                formulaire simplement</h1>
             <Card className="sm:p-2 md:p-6">
                 <CardContent className="flex sm:flex-row sm:gap-6">
                     <div className="relative overflow-hidden bg-white rounded-lg hidden sm:block">
