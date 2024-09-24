@@ -9,6 +9,8 @@ import {SignupPage} from "@/page/signup.page.tsx";
 import CandidatePage from "@/page/candidate.page.tsx";
 import ForgotPage from "@/page/forgot.page.tsx";
 import DashboardAdminPage from "@/page/dashboard-admin.page.tsx";
+import CandidateDetailsPage from "@/page/candidate-details.page.tsx";
+import NewForm from './page/new-form.tsx';
 
 
 const router = createBrowserRouter([
@@ -39,6 +41,14 @@ const router = createBrowserRouter([
     {
         path: "/former/:formerId",
         element: <h1>Former page</h1>
+    },
+    {
+        path: "/candidate/details/:candidateId",
+        element: <CandidateDetailsPage />
+    },
+    {
+        path: "/new-form",
+        element: <NewForm />
     }
 ])
 
@@ -50,7 +60,7 @@ createRoot(document.getElementById('root')!).render(
             enableSystem
             disableTransitionOnChange
           >
-                <RouterProvider router={router} />
+            <RouterProvider router={router} />
       </ThemeProvider>
   </StrictMode>,
 )

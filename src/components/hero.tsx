@@ -4,7 +4,6 @@ import appImageHero from "../../public/illu.jpg";
 import {Button} from "@/components/ui/button.tsx";
 import {useNavigate} from "react-router-dom";
 import {useAuthStore} from "@/hooks/use-auth-store.ts";
-import {Role} from "@/types/Role.ts";
 
 
 interface FeatureProps {
@@ -31,24 +30,10 @@ const Hero = () => {
     const navigate = useNavigate();
 
     const isConnected = useAuthStore((state) => state.isConnected);
-    const id = useAuthStore((state) => state.id);
-    const role = useAuthStore((state) => state.role);
 
     const handleConnect = () => {
         if (isConnected) {
-            switch (role) {
-                case Role.ADMIN:
-                    navigate("/admin");
-                    break;
-                case Role.CANDIDATE:
-                    navigate(`/candidate/${id}`)
-                    break;
-                case Role.FORMER:
-                    navigate(`/former/${id}`)
-                    break;
-                default:
-                    throw new Error("Role undefined")
-            }
+            navigate("/new-form")
         } else {
             navigate(`/login`)
         }
@@ -79,7 +64,6 @@ const Hero = () => {
             <Button
                 size="lg"
                 className="my-12 sm:mt-12"
-                //login or signup
                 onClick={handleConnect}
             >
                 Créer un formulaire
