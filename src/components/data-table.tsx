@@ -13,7 +13,7 @@ import {
 
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow,} from "@/components/ui/table"
 import {Button} from "@/components/ui/button.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuTrigger} from "./ui/dropdown-menu";
 import {DropdownMenuContent} from "@radix-ui/react-dropdown-menu";
 import ContextMenuSelection from "@/components/dashboard-admin/context-menu-selection.tsx";
@@ -87,6 +87,10 @@ function DataTable<TData extends Candidate, TValue>({columns, data}: DataTablePr
             console.error("Erreur API " + err);
         }
     }
+
+    useEffect(() => {
+
+    }, [candidates]);
 
     return (
         <ContextMenuSelection

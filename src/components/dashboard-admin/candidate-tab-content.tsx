@@ -62,7 +62,7 @@ const CandidatesTabContent: React.FC<CandidatesTabContentProps> = ({
                     {isLoading ? (
                         <div>Loading...</div>
                     ) : (
-                        <DataTable columns={columns} data={filteredCandidates} />
+                        <DataTable key={filteredCandidates.length} columns={columns} data={[...filteredCandidates]} />
                     )}
                 </CardContent>
             </Card>
