@@ -13,7 +13,8 @@ import candidateService from "@/service/candidate.service.ts";
 import {toast} from "sonner";
 import {Candidate} from "@/types/Candidate.ts";
 import ConfirmModal from "@/components/modal/confirm-modal.tsx";
-import {useNavigate} from "react-router-dom"; // Pour les notifications
+import {useNavigate} from "react-router-dom";
+import {Checkbox} from "@/components/ui/checkbox.tsx"; // Pour les notifications
 
 interface CandidateColumnsProps {
     candidates: Candidate[];
@@ -41,6 +42,28 @@ export const GetCandidateColumns = ({candidates, setCandidates}: CandidateColumn
     const navigate = useNavigate();
 
     return [
+        {
+            id: "select",
+            header: ({ table }) => (
+                <Checkbox
+                    checked={
+                        table.getIsAllPageRowsSelected() ||
+                        (table.getIsSomePageRowsSelected() && "indeterminate")
+                    }
+                    onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                    aria-label="Select all"
+                />
+            ),
+            cell: ({ row }) => (
+                <Checkbox
+                    checked={row.getIsSelected()}
+                    onCheckedChange={(value) => row.toggleSelected(!!value)}
+                    aria-label="Select row"
+                />
+            ),
+            enableSorting: false,
+            enableHiding: false,
+        },
         {
             accessorKey: "id",
             header: "Numéro de candidat",

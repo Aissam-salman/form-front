@@ -28,7 +28,7 @@ const DashboardAdminPage = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [activeTab, setActiveTab] = useState(menuItems[0].id);
 
-    const candidateColumns = GetCandidateColumns({ candidates, setCandidates})
+    const candidateColumns = GetCandidateColumns({candidates, setCandidates})
 
     const fetchCandidate = async () => {
         setIsLoading(true);
@@ -59,9 +59,8 @@ const DashboardAdminPage = () => {
     }
 
 
-
     useEffect(() => {
-        if(created){
+        if (created) {
             return;
         }
 
@@ -91,10 +90,10 @@ const DashboardAdminPage = () => {
 
     return (
         <div className="flex h-screen bg-gray-100">
-            <Sidebar menuItems={menuItems} />
+            <Sidebar menuItems={menuItems}/>
 
             <main className="flex-1 overflow-y-auto">
-                <HeaderDashboard menuItems={menuItems} activeTab={activeTab} />
+                <HeaderDashboard menuItems={menuItems} activeTab={activeTab}/>
 
                 <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
                     <Tabs
@@ -102,8 +101,13 @@ const DashboardAdminPage = () => {
                         onValueChange={setActiveTab}
                         className="space-y-4"
                     >
-                        <CandidatesTabContent columns={candidateColumns} candidates={candidates} isLoading={isLoading} handleSuccess={handleSuccess} />
-
+                        <CandidatesTabContent
+                            columns={candidateColumns}
+                            candidates={candidates}
+                            isLoading={isLoading}
+                            handleSuccess={handleSuccess}
+                            fetchCandidate={fetchCandidate}
+                        />
                         <TabsContent value="formateurs" className="space-y-4">
                             <Card>
                                 <CardHeader>
@@ -124,7 +128,6 @@ const DashboardAdminPage = () => {
                                 </CardContent>
                             </Card>
                         </TabsContent>
-
                         <TabsContent value="classes" className="space-y-4">
                             <Card>
                                 <CardHeader>
@@ -189,7 +192,7 @@ const DashboardAdminPage = () => {
                     </Tabs>
                 </div>
             </main>
-            <Toaster />
+            <Toaster/>
         </div>
     );
 };

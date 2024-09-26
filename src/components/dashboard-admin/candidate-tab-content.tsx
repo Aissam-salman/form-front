@@ -11,10 +11,11 @@ import NewCandidateModal from "@/components/modal/new-candidate-modal.tsx";
 import DataTable from "@/components/data-table.tsx";
 
 interface CandidatesTabContentProps {
-    columns: ColumnDef<Candidate>[];
-    candidates: Candidate[];
-    isLoading: boolean;
-    handleSuccess: (isSuccess: boolean) => void;
+    columns: ColumnDef<Candidate>[],
+    candidates: Candidate[],
+    isLoading: boolean,
+    handleSuccess: (isSuccess: boolean) => void,
+    fetchCandidate?: () => Promise<void>
 }
 
 const CandidatesTabContent: React.FC<CandidatesTabContentProps> = ({
@@ -22,6 +23,7 @@ const CandidatesTabContent: React.FC<CandidatesTabContentProps> = ({
                                                                        candidates,
                                                                        isLoading,
                                                                        handleSuccess,
+                                                                       fetchCandidate
                                                                    }) => {
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -55,14 +57,14 @@ const CandidatesTabContent: React.FC<CandidatesTabContentProps> = ({
                         </div>
                         <NewCandidateModal onSuccess={handleSuccess}>
                             <Button className="self-end">
-                                <SquarePlus className="h-5 w-5" />
+                                <SquarePlus className="h-5 w-5"/>
                             </Button>
                         </NewCandidateModal>
                     </div>
                     {isLoading ? (
                         <div>Loading...</div>
                     ) : (
-                        <DataTable columns={columns} data={filteredCandidates} />
+                        <DataTable columns={columns} data={filteredCandidates} fetchCandidate={fetchCandidate}/>
                     )}
                 </CardContent>
             </Card>
