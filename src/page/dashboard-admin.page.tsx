@@ -4,13 +4,12 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/comp
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {Tabs, TabsContent} from "@/components/ui/tabs.tsx";
-import {ColumnDef} from "@tanstack/react-table";
 import {Candidate} from "@/types/Candidate.ts";
 import candidateService from "@/service/candidate.service.ts";
 import {toast} from "sonner";
 import {Toaster} from "@/components/ui/sonner.tsx";
-import Sidebar from "@/components/Sidebar.tsx";
-import HeaderDashboard from "@/components/header-dashboard.tsx";
+import Sidebar from "@/components/dashboard-admin/Sidebar.tsx";
+import HeaderDashboard from "@/components/dashboard-admin/header-dashboard.tsx";
 import {GetCandidateColumns} from "@/components/dashboard-admin/columnsCandidate.tsx";
 import CandidatesTabContent from "@/components/dashboard-admin/candidate-tab-content.tsx";
 
@@ -29,7 +28,7 @@ const DashboardAdminPage = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [activeTab, setActiveTab] = useState(menuItems[0].id);
 
-    const columns: ColumnDef<Candidate>[] = GetCandidateColumns({ candidates, setCandidates})
+    const candidateColumns = GetCandidateColumns({ candidates, setCandidates})
 
     const fetchCandidate = async () => {
         setIsLoading(true);
@@ -103,36 +102,7 @@ const DashboardAdminPage = () => {
                         onValueChange={setActiveTab}
                         className="space-y-4"
                     >
-                        <CandidatesTabContent columns={columns} candidates={candidates} isLoading={isLoading} handleSuccess={handleSuccess} />
-                        {/*<TabsContent value="candidats" className="space-y-4">*/}
-                        {/*    <Card>*/}
-                        {/*        <CardHeader>*/}
-                        {/*            <CardTitle>Candidats</CardTitle>*/}
-                        {/*            <CardDescription>Gérer les candidats ici.</CardDescription>*/}
-                        {/*        </CardHeader>*/}
-                        {/*        <CardContent>*/}
-                        {/*            <div className="flex justify-between mb-2">*/}
-                        {/*                <div>*/}
-                        {/*                    <Label htmlFor="search-users">Rechercher un candidat</Label>*/}
-                        {/*                    <Input*/}
-                        {/*                        id="search-users"*/}
-                        {/*                        placeholder="Par nom..."*/}
-                        {/*                    />*/}
-                        {/*                </div>*/}
-                        {/*                <NewCandidateModal onSuccess={handleSuccess}>*/}
-                        {/*                    <Button  className="self-end">*/}
-                        {/*                        <SquarePlus className="h-5 w-5"/>*/}
-                        {/*                    </Button>*/}
-                        {/*                </NewCandidateModal>*/}
-                        {/*            </div>*/}
-                        {/*            {isLoading ? (*/}
-                        {/*                <div>Loading...</div>*/}
-                        {/*            ) : (*/}
-                        {/*                <DataTable columns={columns} data={candidates}/>*/}
-                        {/*            )}*/}
-                        {/*        </CardContent>*/}
-                        {/*    </Card>*/}
-                        {/*</TabsContent>*/}
+                        <CandidatesTabContent columns={candidateColumns} candidates={candidates} isLoading={isLoading} handleSuccess={handleSuccess} />
 
                         <TabsContent value="formateurs" className="space-y-4">
                             <Card>
@@ -154,6 +124,7 @@ const DashboardAdminPage = () => {
                                 </CardContent>
                             </Card>
                         </TabsContent>
+
                         <TabsContent value="classes" className="space-y-4">
                             <Card>
                                 <CardHeader>

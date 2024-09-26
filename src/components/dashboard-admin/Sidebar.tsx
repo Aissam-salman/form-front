@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button} from '@/components/ui/button';
+import {Button} from '@/components/ui/button.tsx';
 import Logo from "@/components/logo.tsx";
 import {LucideProps} from "lucide-react";
 

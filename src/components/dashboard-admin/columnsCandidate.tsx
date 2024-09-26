@@ -1,6 +1,6 @@
 import {ColumnDef} from "@tanstack/react-table";
 import {Button} from "@/components/ui/button";
-import {MoreHorizontal} from "lucide-react";
+import {ArrowUpDown, MoreHorizontal} from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -9,21 +9,23 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {useNavigate} from "react-router-dom";
 import candidateService from "@/service/candidate.service.ts";
 import {toast} from "sonner";
 import {Candidate} from "@/types/Candidate.ts";
-import ConfirmModal from "@/components/modal/confirm-modal.tsx"; // Pour les notifications
+import ConfirmModal from "@/components/modal/confirm-modal.tsx";
+import {useNavigate} from "react-router-dom"; // Pour les notifications
 
 interface CandidateColumnsProps {
     candidates: Candidate[];
     setCandidates: React.Dispatch<React.SetStateAction<Candidate[]>>;
 }
 
+
 export const GetCandidateColumns = ({
                                         candidates,
                                         setCandidates,
                                     }: CandidateColumnsProps): ColumnDef<Candidate>[] => {
+
     const onCopy = (email: string) => {
         navigator.clipboard.writeText(email);
         toast.success("Email copié dans le presse-papier !");
@@ -46,26 +48,61 @@ export const GetCandidateColumns = ({
         {
             accessorKey: "id",
             header: "Numéro de candidat",
+            displayName: "Id"
         },
         {
             accessorKey: "firstname",
-            header: "Prénom",
+            header: ({column}) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Prénom
+                        <ArrowUpDown className="ml-2 h-4 w-4"/>
+                    </Button>
+                )
+            },
+            displayName: "Prénom"
         },
         {
             accessorKey: "lastname",
-            header: "Nom",
+            header: ({column}) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Nom
+                        <ArrowUpDown className="ml-2 h-4 w-4"/>
+                    </Button>
+                )
+            },
+            displayName: "Nom"
         },
         {
             accessorKey: "email",
-            header: "Email",
+            header: ({column}) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Email
+                        <ArrowUpDown className="ml-2 h-4 w-4"/>
+                    </Button>
+                )
+            },
+            displayName: "Email"
         },
         {
             accessorKey: "phone_number",
             header: "Téléphone",
+            displayName: "Téléphone",
         },
         {
             id: "actions",
-            cell: ({ row }) => {
+            cell: ({row}) => {
                 const candidate = row.original;
 
                 return (
@@ -73,7 +110,7 @@ export const GetCandidateColumns = ({
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="h-8 w-8 p-0">
                                 <span className="sr-only">Open menu</span>
-                                <MoreHorizontal className="h-4 w-4" />
+                                <MoreHorizontal className="h-4 w-4"/>
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
@@ -81,7 +118,7 @@ export const GetCandidateColumns = ({
                             <DropdownMenuItem onClick={() => onCopy(candidate.email)}>
                                 Copy email
                             </DropdownMenuItem>
-                            <DropdownMenuSeparator />
+                            <DropdownMenuSeparator/>
                             <DropdownMenuItem onClick={() => navigate(`/candidate/details/${candidate.id}`)}>
                                 Détails candidat
                             </DropdownMenuItem>
