@@ -106,7 +106,6 @@ const DashboardAdminPage = () => {
                             candidates={candidates}
                             isLoading={isLoading}
                             handleSuccess={handleSuccess}
-                            fetchCandidate={fetchCandidate}
                         />
                         <TabsContent value="formateurs" className="space-y-4">
                             <Card>

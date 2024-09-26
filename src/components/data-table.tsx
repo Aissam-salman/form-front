@@ -25,18 +25,17 @@ import {Candidate} from "@/types/Candidate.ts";
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[],
     data: TData[],
-    fetchCandidate?: (() => Promise<void>)
 }
 
 interface ColumnMetaWithDisplayName {
     displayName?: string;
 }
 
-function DataTable<TData extends Candidate, TValue>({columns, data, fetchCandidate}: DataTableProps<TData, TValue>) {
+function DataTable<TData extends Candidate, TValue>({columns, data}: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = useState({})
-    const [candidates] = useState<TData[]>(data);
+    const [candidates,setCandidates] = useState<TData[]>(data);
 
 
     const table = useReactTable({
@@ -65,22 +64,27 @@ function DataTable<TData extends Candidate, TValue>({columns, data, fetchCandida
 
 
     const handleDelete = async (rows: Row<TData>[]) => {
-        console.log("Supprimer", rows);
+        console.log("Suppression en cours", rows);
 
-         rows.forEach((row) => {
-            const id = row.original?.id;
-            try {
-                candidateService.delete(id);
-                toast.success(`Candidat ${id} supprimé avec succès.`);
-            } catch (err) {
-                toast.error("Erreur lors de la suppression du candidat");
-                console.error("Erreur API " + err);
-            }
+        const idsToDelete = rows.map((row) => row.original.id);
 
-        });
+        try {
+            await Promise.all(
+                idsToDelete.map(async (id) => {
+                    await candidateService.delete(id);
+                })
+            );
 
-        if (fetchCandidate) {
-            await fetchCandidate();
+            const updatedCandidates = candidates.filter(
+                (candidate) => !idsToDelete.includes(candidate.id)
+            );
+
+            setCandidates(updatedCandidates);
+
+            toast.success("Candidats supprimés avec succès.");
+        } catch (err) {
+            toast.error("Erreur lors de la suppression des candidats.");
+            console.error("Erreur API " + err);
         }
     }
 

@@ -15,7 +15,6 @@ interface CandidatesTabContentProps {
     candidates: Candidate[],
     isLoading: boolean,
     handleSuccess: (isSuccess: boolean) => void,
-    fetchCandidate?: () => Promise<void>
 }
 
 const CandidatesTabContent: React.FC<CandidatesTabContentProps> = ({
@@ -23,7 +22,6 @@ const CandidatesTabContent: React.FC<CandidatesTabContentProps> = ({
                                                                        candidates,
                                                                        isLoading,
                                                                        handleSuccess,
-                                                                       fetchCandidate
                                                                    }) => {
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -64,7 +62,7 @@ const CandidatesTabContent: React.FC<CandidatesTabContentProps> = ({
                     {isLoading ? (
                         <div>Loading...</div>
                     ) : (
-                        <DataTable columns={columns} data={filteredCandidates} fetchCandidate={fetchCandidate}/>
+                        <DataTable columns={columns} data={filteredCandidates} />
                     )}
                 </CardContent>
             </Card>
