@@ -20,11 +20,7 @@ interface CandidateColumnsProps {
     setCandidates: React.Dispatch<React.SetStateAction<Candidate[]>>;
 }
 
-
-export const GetCandidateColumns = ({
-                                        candidates,
-                                        setCandidates,
-                                    }: CandidateColumnsProps): ColumnDef<Candidate>[] => {
+export const GetCandidateColumns = ({candidates, setCandidates}: CandidateColumnsProps): ColumnDef<Candidate>[]  => {
 
     const onCopy = (email: string) => {
         navigator.clipboard.writeText(email);
@@ -48,7 +44,9 @@ export const GetCandidateColumns = ({
         {
             accessorKey: "id",
             header: "Numéro de candidat",
-            displayName: "Id"
+            meta: {
+                displayName: "Id"
+            }
         },
         {
             accessorKey: "firstname",
@@ -63,7 +61,9 @@ export const GetCandidateColumns = ({
                     </Button>
                 )
             },
-            displayName: "Prénom"
+            meta: {
+                displayName: "Prénom"
+            }
         },
         {
             accessorKey: "lastname",
@@ -78,7 +78,9 @@ export const GetCandidateColumns = ({
                     </Button>
                 )
             },
-            displayName: "Nom"
+            meta: {
+                displayName: "Nom"
+            }
         },
         {
             accessorKey: "email",
@@ -93,12 +95,16 @@ export const GetCandidateColumns = ({
                     </Button>
                 )
             },
-            displayName: "Email"
+            meta: {
+                displayName: "Email"
+            }
         },
         {
             accessorKey: "phone_number",
             header: "Téléphone",
-            displayName: "Téléphone",
+            meta: {
+                displayName: "Téléphone",
+            }
         },
         {
             id: "actions",

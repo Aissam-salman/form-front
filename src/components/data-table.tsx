@@ -20,7 +20,9 @@ interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[]
 }
-
+interface ColumnMetaWithDisplayName {
+    displayName?: string;
+}
 function DataTable<TData, TValue>({columns, data}: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -101,7 +103,7 @@ function DataTable<TData, TValue>({columns, data}: DataTableProps<TData, TValue>
                                     (column) => column.getCanHide()
                                 )
                                 .map((column) => {
-                                    const columnDefWithDisplayName = column.columnDef as ColumnDef<TData, TValue> & { displayName?: string };
+                                    const meta = column.columnDef.meta as ColumnMetaWithDisplayName | undefined
                                     return (
                                         <DropdownMenuCheckboxItem
                                             key={column.id}
@@ -111,7 +113,7 @@ function DataTable<TData, TValue>({columns, data}: DataTableProps<TData, TValue>
                                                 column.toggleVisibility(!!value)
                                             }
                                         >
-                                            {columnDefWithDisplayName.displayName || column.id}
+                                            {meta?.displayName|| column.id}
                                         </DropdownMenuCheckboxItem>
                                     )
                                 })}
