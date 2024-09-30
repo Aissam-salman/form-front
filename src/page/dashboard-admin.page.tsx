@@ -10,25 +10,44 @@ import {toast} from "sonner";
 import {Toaster} from "@/components/ui/sonner.tsx";
 import Sidebar from "@/components/dashboard-admin/Sidebar.tsx";
 import HeaderDashboard from "@/components/dashboard-admin/header-dashboard.tsx";
-import {GetCandidateColumns} from "@/components/dashboard-admin/columnsCandidate.tsx";
+import {GetCandidateColumns} from "@/components/dashboard-admin/columns-candidate.tsx";
 import CandidatesTabContent from "@/components/dashboard-admin/candidate-tab-content.tsx";
+import FormersTabContent from "@/components/dashboard-admin/former-tab-content.tsx";
+import {Former} from "@/types/Former.ts";
+import {GetFormerColumns} from "@/components/dashboard-admin/columns-former.tsx";
+import formerService from "@/service/former.service.ts";
 
 const DashboardAdminPage = () => {
     const menuItems = [
-        {id: "candidats", label: "Candidats", icon: UsersIcon},
+        {id: "candidates", label: "Candidats", icon: UsersIcon},
         {id: "classes", label: "Classes", icon: BookOpenIcon},
-        {id: "formateurs", label: "Formateurs", icon: BookIcon},
+        {id: "formers", label: "Formateurs", icon: BookIcon},
         {id: "centers", label: "Centers", icon: HomeIcon},
         {id: "forms", label: "Forms", icon: FileTextIcon},
     ];
 
-
     const [candidates, setCandidates] = useState<Candidate[]>([]);
+    const [formers, setFormers] = useState<Former[]>([]);
+
     const [created, setCreated] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState(false);
+
     const [activeTab, setActiveTab] = useState(menuItems[0].id);
 
-    const candidateColumns = GetCandidateColumns({candidates, setCandidates})
+    const candidateColumns = GetCandidateColumns({candidates, setCandidates});
+    const formerColumns = GetFormerColumns({formers, setFormers});
+
+    const fetchFormers = async () => {
+        setIsLoading(true);
+        try {
+            const resp = await formerService.getAll();
+            setFormers(resp.data)
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
 
     const fetchCandidate = async () => {
         setIsLoading(true);
@@ -42,7 +61,7 @@ const DashboardAdminPage = () => {
         }
     };
 
-    const handleSuccess = (isSuccess: boolean) => {
+    const handleSuccessCandidate = (isSuccess: boolean) => {
         if (isSuccess && !created) {
 
             toast.success("Nouveau candidat!.");
@@ -54,6 +73,22 @@ const DashboardAdminPage = () => {
             }, 10000);
         } else {
             toast.error("Erreur lors de la création du candidat");
+            setCreated(false);
+        }
+    }
+
+    const handleSuccessFormer = (isSuccess: boolean) => {
+        if (isSuccess && !created) {
+
+            toast.success("Nouveau formateur !");
+            fetchFormers()
+            setCreated(true);
+
+            setTimeout(() => {
+                setCreated(false);
+            }, 10000);
+        } else {
+            toast.error("Erreur lors de la création du formateur");
             setCreated(false);
         }
     }
@@ -73,7 +108,24 @@ const DashboardAdminPage = () => {
             setIsLoading(true);
             setTimeout(() => {
                 console.log("update DB");
-                fetchCandidate();
+                switch (activeTab){
+                    case menuItems[0].id:
+                        fetchCandidate();
+                        break;
+                        case menuItems[1].id:
+                            // classe
+                        break;
+                        case menuItems[2].id:
+                            fetchFormers();
+                            // formateurs
+                        break;
+                    case menuItems[3].id:
+                        // centers
+                        break;
+                    case menuItems[4].id:
+                        //forms
+                        break;
+                }
             }, 5000)
         });
 
@@ -82,15 +134,33 @@ const DashboardAdminPage = () => {
             setIsLoading(false);
             eventSource.close();
         };
-    }, [created]);
+    }, [activeTab, created]);
 
     useEffect(() => {
-        fetchCandidate();
-    }, []);
+        console.log(activeTab)
+        switch (activeTab){
+            case menuItems[0].id:
+                fetchCandidate();
+                break;
+            case menuItems[1].id:
+                // classe
+                break;
+            case menuItems[2].id:
+                fetchFormers();
+                // formateurs
+                break;
+            case menuItems[3].id:
+                // centers
+                break;
+            case menuItems[4].id:
+                //forms
+                break;
+        }
+    }, [activeTab]);
 
     return (
         <div className="flex h-screen bg-gray-100">
-            <Sidebar menuItems={menuItems}/>
+            <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} menuItems={menuItems}/>
 
             <main className="flex-1 overflow-y-auto">
                 <HeaderDashboard menuItems={menuItems} activeTab={activeTab}/>
@@ -101,32 +171,20 @@ const DashboardAdminPage = () => {
                         onValueChange={setActiveTab}
                         className="space-y-4"
                     >
+                        {/*TODO: need to add affected Path*/}
                         <CandidatesTabContent
                             columns={candidateColumns}
                             candidates={candidates}
                             isLoading={isLoading}
-                            handleSuccess={handleSuccess}
+                            handleSuccess={handleSuccessCandidate}
                         />
-                        <TabsContent value="formateurs" className="space-y-4">
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Formateurs</CardTitle>
-                                    <CardDescription>Gérer les formateurs ici.</CardDescription>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="search-users">
-                                            Rechercher un formateur
-                                        </Label>
-                                        <Input
-                                            id="search-users"
-                                            placeholder="Search by name or email..."
-                                        />
-                                    </div>
-                                    {/* Add user list or table component here */}
-                                </CardContent>
-                            </Card>
-                        </TabsContent>
+                        <FormersTabContent
+                            columns={formerColumns}
+                            formers={formers}
+                            isLoading={isLoading}
+                            handleSuccess={handleSuccessFormer}
+                        />
+
                         <TabsContent value="classes" className="space-y-4">
                             <Card>
                                 <CardHeader>

@@ -5,21 +5,21 @@ import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {SquarePlus} from "lucide-react";
 import {useState} from "react";
-import {Candidate} from "@/types/Candidate.ts";
 import {ColumnDef} from "@tanstack/react-table";
-import NewCandidateModal from "@/components/modal/new-candidate-modal.tsx";
 import DataTable from "@/components/data-table.tsx";
+import {Former} from "@/types/Former.ts";
+import NewFormerModal from "@/components/modal/new-former-modal.tsx";
 
 interface CandidatesTabContentProps {
-    columns: ColumnDef<Candidate>[],
-    candidates: Candidate[],
+    columns: ColumnDef<Former>[],
+    formers: Former[],
     isLoading: boolean,
     handleSuccess: (isSuccess: boolean) => void,
 }
 
-const CandidatesTabContent: React.FC<CandidatesTabContentProps> = ({
+const FormersTabContent: React.FC<CandidatesTabContentProps> = ({
                                                                        columns,
-                                                                       candidates,
+                                                                       formers,
                                                                        isLoading,
                                                                        handleSuccess,
                                                                    }) => {
@@ -29,23 +29,23 @@ const CandidatesTabContent: React.FC<CandidatesTabContentProps> = ({
         setSearchTerm(e.target.value);
     };
 
-    const filteredCandidates = candidates.filter((candidate) =>
-        `${candidate.firstname} ${candidate.lastname}`
+    const filteredFormers = formers.filter((former) =>
+        `${former.firstname} ${former.lastname}`
             .toLowerCase()
             .includes(searchTerm.toLowerCase())
     );
 
     return (
-        <TabsContent value="candidates" className="space-y-4">
+        <TabsContent value="formers" className="space-y-4">
             <Card>
                 <CardHeader>
-                    <CardTitle>Candidats</CardTitle>
-                    <CardDescription>Gérer les candidats ici.</CardDescription>
+                    <CardTitle>Formateurs</CardTitle>
+                    <CardDescription>Gérer les formateurs ici.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="flex justify-between mb-2">
                         <div>
-                            <Label htmlFor="search-users">Rechercher un candidat</Label>
+                            <Label htmlFor="search-users">Rechercher un formateur</Label>
                             <Input
                                 id="search-users"
                                 placeholder="Par nom..."
@@ -53,16 +53,16 @@ const CandidatesTabContent: React.FC<CandidatesTabContentProps> = ({
                                 onChange={handleSearchChange}
                             />
                         </div>
-                        <NewCandidateModal onSuccess={handleSuccess}>
+                        <NewFormerModal onSuccess={handleSuccess}>
                             <Button className="self-end">
                                 <SquarePlus className="h-5 w-5"/>
                             </Button>
-                        </NewCandidateModal>
+                        </NewFormerModal>
                     </div>
                     {isLoading ? (
                         <div>Loading...</div>
                     ) : (
-                        <DataTable key={filteredCandidates.length} columns={columns} data={[...filteredCandidates]} />
+                        <DataTable key={filteredFormers.length} columns={columns} data={[...filteredFormers]} />
                     )}
                 </CardContent>
             </Card>
@@ -70,4 +70,4 @@ const CandidatesTabContent: React.FC<CandidatesTabContentProps> = ({
     );
 };
 
-export default CandidatesTabContent;
+export default FormersTabContent;

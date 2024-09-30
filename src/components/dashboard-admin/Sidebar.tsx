@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Button} from '@/components/ui/button.tsx';
 import Logo from "@/components/logo.tsx";
 import {LucideProps} from "lucide-react";
@@ -11,10 +11,15 @@ interface MenuItem {
 
 interface SidebarProps {
     menuItems: MenuItem[];
+    activeTab?:  string;
+    setActiveTab: (value: string) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ menuItems }) => {
-    const [activeTab, setActiveTab] = useState<string>(menuItems[0]?.id || '');
+const Sidebar: React.FC<SidebarProps> = ({ menuItems, activeTab, setActiveTab }) => {
+
+    if (!activeTab) {
+        activeTab = menuItems[0].id;
+    }
 
     return (
         <aside className="w-64 bg-white shadow-md">
