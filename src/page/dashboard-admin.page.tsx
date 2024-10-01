@@ -12,15 +12,19 @@ import Sidebar from "@/components/dashboard-admin/Sidebar.tsx";
 import HeaderDashboard from "@/components/dashboard-admin/header-dashboard.tsx";
 import {GetCandidateColumns} from "@/components/dashboard-admin/candidate/columns-candidate.tsx";
 import CandidatesTabContent from "@/components/dashboard-admin/candidate/candidate-tab-content.tsx";
-import FormersTabContent from "@/components/dashboard-admin/former-tab-content.tsx";
+import FormersTabContent from "@/components/dashboard-admin/former/former-tab-content.tsx";
 import {Former} from "@/types/Former.ts";
-import {GetFormerColumns} from "@/components/dashboard-admin/columns-former.tsx";
+import {GetFormerColumns} from "@/components/dashboard-admin/former/columns-former.tsx";
 import formerService from "@/service/former.service.ts";
-import ClassesTabContent from "@/components/dashboard-admin/classe-tab-content.tsx";
-import {GetClassesColumns} from "@/components/dashboard-admin/columns-classe.tsx";
+import ClassesTabContent from "@/components/dashboard-admin/classe/classe-tab-content.tsx";
+import {GetClassesColumns} from "@/components/dashboard-admin/classe/columns-classe.tsx";
 import {Path} from "@/types/Path.ts";
 import classeService from "@/service/classe.service.ts";
 import {useStore} from "@/store/use-store.ts";
+import {GetCentersColumns} from "@/components/dashboard-admin/center/columns-center.tsx";
+import {Center} from "@/types/Center.ts";
+import centerService from "@/service/center.service.ts";
+import CenterTabContent from "@/components/dashboard-admin/center/center-tab-content.tsx";
 
 const DashboardAdminPage = () => {
     const menuItems = [
@@ -34,6 +38,7 @@ const DashboardAdminPage = () => {
     const [candidates, setCandidates] = useState<Candidate[]>([]);
     const [formers, setFormers] = useState<Former[]>([]);
     const [classes, setClasses] = useState<Path[]>([]);
+    const [centers, setCenters] = useState<Center[]>([]);
 
     const [created, setCreated] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -42,7 +47,9 @@ const DashboardAdminPage = () => {
 
     const candidateColumns = GetCandidateColumns({candidates, setCandidates});
     const formerColumns = GetFormerColumns({formers, setFormers});
-    const classColumns = GetClassesColumns({classes, setClasses})
+    const classColumns = GetClassesColumns({classes, setClasses});
+    const centerColumns = GetCentersColumns({centers, setCenters})
+
 
     const fetchFormers = async () => {
         setIsLoading(true);
@@ -77,6 +84,17 @@ const DashboardAdminPage = () => {
             setIsLoading(false);
         }
     };
+    const fetchCenters = async () => {
+        setIsLoading(true);
+        try {
+            const resp = await centerService.getAll();
+            setCenters(resp.data);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setIsLoading(false);
+        }
+    }
 
     const handleSuccessCandidate = (isSuccess: boolean) => {
         if (isSuccess && !created) {
@@ -122,8 +140,22 @@ const DashboardAdminPage = () => {
             setCreated(false);
         }
     }
+    const handleSuccessCenter = (isSuccess: boolean) => {
+        if (isSuccess && !created) {
 
+            toast.success("Nouveau centre !");
+            fetchCenters()
+            setCreated(true);
+            setTimeout(() => {
+                setCreated(false);
+            }, 10000);
+        } else {
+            toast.error("Erreur lors de la création d'un centre");
+            setCreated(false);
+        }
+    }
 
+// handle SSE from server, maybe is useless
     useEffect(() => {
         if (created) {
             return;
@@ -149,7 +181,7 @@ const DashboardAdminPage = () => {
                         fetchFormers();
                         break;
                     case menuItems[3].id:
-                        // centers
+                        fetchCenters();
                         break;
                     case menuItems[4].id:
                         //forms
@@ -157,7 +189,6 @@ const DashboardAdminPage = () => {
                 }
             }, 5000)
         });
-
 
         return () => {
             setIsLoading(false);
@@ -178,7 +209,7 @@ const DashboardAdminPage = () => {
                 fetchFormers();
                 break;
             case menuItems[3].id:
-                // centers
+                fetchCenters();
                 break;
             case menuItems[4].id:
                 //forms
@@ -192,6 +223,7 @@ const DashboardAdminPage = () => {
             <main className="flex-1 overflow-y-auto">
                 <HeaderDashboard menuItems={menuItems} activeTab={activeTab}/>
                 <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+                        {/* FIX: MenuContext change with tab */}
                     <Tabs
                         value={activeTab}
                         onValueChange={setActiveTab}
@@ -210,33 +242,15 @@ const DashboardAdminPage = () => {
                             isLoading={isLoading}
                             handleSuccess={handleSuccessFormer}
                         />
+
+                        {/* FIX: Create classe change */}
                         <ClassesTabContent
                             columns={classColumns}
                             classes={classes}
                             isLoading={isLoading}
                             handleSuccess={handleSuccessClasse}
                         />
-                        <TabsContent value="centers" className="space-y-4">
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Centres AFPA</CardTitle>
-                                    <CardDescription>Gérer les centres AFPA ici.</CardDescription>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="search-centers">
-                                            Rechercher un centre AFPA
-                                        </Label>
-                                        <Input
-                                            id="search-centers"
-                                            placeholder="Search by center name or location..."
-                                        />
-                                    </div>
-                                    {/* Add center list or table component here */}
-
-                                </CardContent>
-                            </Card>
-                        </TabsContent>
+                         <CenterTabContent columns={centerColumns} centers={centers} isLoading={isLoading} handleSuccess={handleSuccessCenter}/>
                         <TabsContent value="forms" className="space-y-4">
                             <Card>
                                 <CardHeader>

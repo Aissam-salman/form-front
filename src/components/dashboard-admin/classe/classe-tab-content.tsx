@@ -1,6 +1,6 @@
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
-import {TabsContent} from "@/components/ui/tabs";
-import {Button} from "@/components/ui/button";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
+import {TabsContent} from "@/components/ui/tabs.tsx";
+import {Button} from "@/components/ui/button.tsx";
 import {SquarePlus} from "lucide-react";
 import {ColumnDef} from "@tanstack/react-table";
 import DataTable from "@/components/data-table.tsx";

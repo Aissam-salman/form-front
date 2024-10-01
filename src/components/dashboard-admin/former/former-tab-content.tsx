@@ -1,8 +1,8 @@
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
-import {TabsContent} from "@/components/ui/tabs";
-import {Label} from "@/components/ui/label";
-import {Input} from "@/components/ui/input";
-import {Button} from "@/components/ui/button";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
+import {TabsContent} from "@/components/ui/tabs.tsx";
+import {Label} from "@/components/ui/label.tsx";
+import {Input} from "@/components/ui/input.tsx";
+import {Button} from "@/components/ui/button.tsx";
 import {SquarePlus} from "lucide-react";
 import {useState} from "react";
 import {ColumnDef} from "@tanstack/react-table";

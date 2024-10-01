@@ -1,5 +1,5 @@
 import {ColumnDef} from "@tanstack/react-table";
-import {Button} from "@/components/ui/button";
+import {Button} from "@/components/ui/button.tsx";
 import {ArrowUpDown, MoreHorizontal} from "lucide-react";
 import {
     DropdownMenu,
@@ -8,26 +8,26 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu.tsx";
 import {toast} from "sonner";
 import ConfirmModal from "@/components/modal/confirm-modal.tsx";
 import {useNavigate} from "react-router-dom";
 import {Checkbox} from "@/components/ui/checkbox.tsx";
-import {Path} from "@/types/Path.ts";
-import classeService from "@/service/classe.service.ts";
+import {Center} from "@/types/Center.ts";
+import centerService from "@/service/center.service.ts";
 
-interface ClasseColumnsProps {
-    classes: Path[];
-    setClasses: React.Dispatch<React.SetStateAction<Path[]>>;
+interface CentersColumnsProps {
+    centers: Center[];
+    setCenters: React.Dispatch<React.SetStateAction<Center[]>>;
 }
 
-export const GetClassesColumns = ({classes, setClasses}: ClasseColumnsProps): ColumnDef<Path>[]  => {
+export const GetCentersColumns = ({centers, setCenters}: CentersColumnsProps): ColumnDef<Center>[]  => {
 
-    const deleteClasse = async (id: string | undefined) => {
+    const deleteCenter = async (id: string | undefined) => {
         if (!id) return;
         try {
-            await classeService.delete(id);
-            setClasses(classes.filter((classe) => classe.id !== id));
+            await centerService.delete(id);
+            setCenters(centers.filter((center) => center.id !== id));
             toast.success(`Classe ${id} supprimé avec succès.`);
         } catch (err) {
             toast.error("Erreur lors de la suppression de la classe");
@@ -62,13 +62,13 @@ export const GetClassesColumns = ({classes, setClasses}: ClasseColumnsProps): Co
         },
         {
             accessorKey: "id",
-            header: "Numéro de classe",
+            header: "Numéro de centre",
             meta: {
                 displayName: "Id"
             }
         },
         {
-            accessorKey: "center_name",
+            accessorKey: "name",
             header: ({column}) => {
                 return (
                     <Button
@@ -81,65 +81,47 @@ export const GetClassesColumns = ({classes, setClasses}: ClasseColumnsProps): Co
                 )
             },
             meta: {
-                displayName: "Centre"
+                displayName: "Nom"
             }
         },
         {
-            accessorKey: "former_name",
+            accessorKey: "address",
             header: ({column}) => {
                 return (
                     <Button
                         variant="ghost"
                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     >
-                        Formateur
+                        Adresse
                         <ArrowUpDown className="ml-2 h-4 w-4"/>
                     </Button>
                 )
             },
             meta: {
-                displayName: "Formateur"
+                displayName: "adresse"
             }
         },
         {
-            accessorKey: "date_start",
+            accessorKey: "phone_number",
             header: ({column}) => {
                 return (
                     <Button
                         variant="ghost"
                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     >
-                        Début
+                        Téléphone
                         <ArrowUpDown className="ml-2 h-4 w-4"/>
                     </Button>
                 )
             },
             meta: {
-                displayName: "Date début"
-            }
-        },
-        {
-            accessorKey: "date_end",
-            header: ({column}) => {
-                return (
-                    <Button
-                        variant="ghost"
-                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                    >
-                        Fin
-                        <ArrowUpDown className="ml-2 h-4 w-4"/>
-                    </Button>
-                )
-            },
-            meta: {
-                displayName: "Date fin",
+                displayName: "téléphone"
             }
         },
         {
             id: "actions",
             cell: ({row}) => {
-                const classe = row.original;
-
+                const center = row.original;
                 return (
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -152,15 +134,15 @@ export const GetClassesColumns = ({classes, setClasses}: ClasseColumnsProps): Co
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             <DropdownMenuSeparator/>
                             {/*TODO: ajouter page former details*/}
-                            <DropdownMenuItem onClick={() => navigate(`/classes/details/${classe.id}`)}>
-                                Détails classe
+                            <DropdownMenuItem onClick={() => navigate(`/centers/details/${center.id}`)}>
+                                Détails centre
                             </DropdownMenuItem>
                             <DropdownMenuItem
                                 onSelect={(e) => e.preventDefault()}
                                 className="text-red-400 bg-red-100 cursor-pointer"
                             >
-                                <ConfirmModal onConfirm={() => deleteClasse(classe.id)}>
-                                    <span>Supprimer la classe</span>
+                                <ConfirmModal onConfirm={() => deleteCenter(center.id)}>
+                                    <span>Supprimer le centre</span>
                                 </ConfirmModal>
                             </DropdownMenuItem>
                         </DropdownMenuContent>

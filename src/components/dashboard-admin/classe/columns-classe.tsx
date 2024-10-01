@@ -1,5 +1,5 @@
 import {ColumnDef} from "@tanstack/react-table";
-import {Button} from "@/components/ui/button";
+import {Button} from "@/components/ui/button.tsx";
 import {ArrowUpDown, MoreHorizontal} from "lucide-react";
 import {
     DropdownMenu,
@@ -8,33 +8,29 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu.tsx";
 import {toast} from "sonner";
 import ConfirmModal from "@/components/modal/confirm-modal.tsx";
 import {useNavigate} from "react-router-dom";
 import {Checkbox} from "@/components/ui/checkbox.tsx";
-import {Former} from "@/types/Former.ts";
-import formerService from "@/service/former.service.ts"; // Pour les notifications
+import {Path} from "@/types/Path.ts";
+import classeService from "@/service/classe.service.ts";
 
-interface FormerColumnsProps {
-    formers: Former[];
-    setFormers: React.Dispatch<React.SetStateAction<Former[]>>;
+interface ClasseColumnsProps {
+    classes: Path[];
+    setClasses: React.Dispatch<React.SetStateAction<Path[]>>;
 }
 
-export const GetFormerColumns = ({formers, setFormers}: FormerColumnsProps): ColumnDef<Former>[]  => {
+export const GetClassesColumns = ({classes, setClasses}: ClasseColumnsProps): ColumnDef<Path>[]  => {
 
-    const onCopy = (email: string) => {
-        navigator.clipboard.writeText(email);
-        toast.success("Email copié dans le presse-papier !");
-    };
-
-    const deleteFormer = async (id: string) => {
+    const deleteClasse = async (id: string | undefined) => {
+        if (!id) return;
         try {
-            await formerService.delete(id);
-            setFormers(formers.filter((former) => former.id !== id));
-            toast.success(`Formateur ${id} supprimé avec succès.`);
+            await classeService.delete(id);
+            setClasses(classes.filter((classe) => classe.id !== id));
+            toast.success(`Classe ${id} supprimé avec succès.`);
         } catch (err) {
-            toast.error("Erreur lors de la suppression du formateur");
+            toast.error("Erreur lors de la suppression de la classe");
             console.error("Erreur API " + err);
         }
     };
@@ -66,73 +62,83 @@ export const GetFormerColumns = ({formers, setFormers}: FormerColumnsProps): Col
         },
         {
             accessorKey: "id",
-            header: "Numéro de formateur",
+            header: "Numéro de classe",
             meta: {
                 displayName: "Id"
             }
         },
         {
-            accessorKey: "firstname",
+            accessorKey: "center_name",
             header: ({column}) => {
                 return (
                     <Button
                         variant="ghost"
                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     >
-                        Prénom
+                        Centre
                         <ArrowUpDown className="ml-2 h-4 w-4"/>
                     </Button>
                 )
             },
             meta: {
-                displayName: "Prénom"
+                displayName: "Centre"
             }
         },
         {
-            accessorKey: "lastname",
+            accessorKey: "former_name",
             header: ({column}) => {
                 return (
                     <Button
                         variant="ghost"
                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     >
-                        Nom
+                        Formateur
                         <ArrowUpDown className="ml-2 h-4 w-4"/>
                     </Button>
                 )
             },
             meta: {
-                displayName: "Nom"
+                displayName: "Formateur"
             }
         },
         {
-            accessorKey: "email",
+            accessorKey: "date_start",
             header: ({column}) => {
                 return (
                     <Button
                         variant="ghost"
                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     >
-                        Email
+                        Début
                         <ArrowUpDown className="ml-2 h-4 w-4"/>
                     </Button>
                 )
             },
             meta: {
-                displayName: "Email"
+                displayName: "Date début"
             }
         },
         {
-            accessorKey: "phone_number",
-            header: "Téléphone",
+            accessorKey: "date_end",
+            header: ({column}) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Fin
+                        <ArrowUpDown className="ml-2 h-4 w-4"/>
+                    </Button>
+                )
+            },
             meta: {
-                displayName: "Téléphone",
+                displayName: "Date fin",
             }
         },
         {
             id: "actions",
             cell: ({row}) => {
-                const former = row.original;
+                const classe = row.original;
 
                 return (
                     <DropdownMenu>
@@ -144,20 +150,17 @@ export const GetFormerColumns = ({formers, setFormers}: FormerColumnsProps): Col
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem onClick={() => onCopy(former.email)}>
-                                Copy email
-                            </DropdownMenuItem>
                             <DropdownMenuSeparator/>
                             {/*TODO: ajouter page former details*/}
-                            <DropdownMenuItem onClick={() => navigate(`/former/details/${former.id}`)}>
-                                Détails formateur
+                            <DropdownMenuItem onClick={() => navigate(`/classes/details/${classe.id}`)}>
+                                Détails classe
                             </DropdownMenuItem>
                             <DropdownMenuItem
                                 onSelect={(e) => e.preventDefault()}
                                 className="text-red-400 bg-red-100 cursor-pointer"
                             >
-                                <ConfirmModal onConfirm={() => deleteFormer(former.id)}>
-                                    <span>Supprimer le formateur</span>
+                                <ConfirmModal onConfirm={() => deleteClasse(classe.id)}>
+                                    <span>Supprimer la classe</span>
                                 </ConfirmModal>
                             </DropdownMenuItem>
                         </DropdownMenuContent>
