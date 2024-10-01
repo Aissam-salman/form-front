@@ -6,7 +6,7 @@ import {ModeToggle} from "@/components/mode-toggle.tsx";
 import {z} from "zod"
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {useAuthStore} from "@/hooks/use-auth-store.ts";
+import {useStore} from "@/store/use-store.ts";
 import {useNavigate} from "react-router-dom";
 import {
     Form,
@@ -41,9 +41,9 @@ export const LoginPage = () => {
 
     //TODO: add verif isConnected before & redirect to home if connected
 
-    const setToken = useAuthStore((state) => state.setToken);
-    const setId = useAuthStore((state) => state.setId);
-    const setRole = useAuthStore((state) => state.setRole);
+    const setToken = useStore((state) => state.setToken);
+    const setId = useStore((state) => state.setId);
+    const setRole = useStore((state) => state.setRole);
 
 
     const navigate = useNavigate();

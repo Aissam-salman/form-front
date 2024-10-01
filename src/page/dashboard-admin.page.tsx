@@ -10,12 +10,17 @@ import {toast} from "sonner";
 import {Toaster} from "@/components/ui/sonner.tsx";
 import Sidebar from "@/components/dashboard-admin/Sidebar.tsx";
 import HeaderDashboard from "@/components/dashboard-admin/header-dashboard.tsx";
-import {GetCandidateColumns} from "@/components/dashboard-admin/columns-candidate.tsx";
-import CandidatesTabContent from "@/components/dashboard-admin/candidate-tab-content.tsx";
+import {GetCandidateColumns} from "@/components/dashboard-admin/candidate/columns-candidate.tsx";
+import CandidatesTabContent from "@/components/dashboard-admin/candidate/candidate-tab-content.tsx";
 import FormersTabContent from "@/components/dashboard-admin/former-tab-content.tsx";
 import {Former} from "@/types/Former.ts";
 import {GetFormerColumns} from "@/components/dashboard-admin/columns-former.tsx";
 import formerService from "@/service/former.service.ts";
+import ClassesTabContent from "@/components/dashboard-admin/classe-tab-content.tsx";
+import {GetClassesColumns} from "@/components/dashboard-admin/columns-classe.tsx";
+import {Path} from "@/types/Path.ts";
+import classeService from "@/service/classe.service.ts";
+import {useStore} from "@/store/use-store.ts";
 
 const DashboardAdminPage = () => {
     const menuItems = [
@@ -28,14 +33,16 @@ const DashboardAdminPage = () => {
 
     const [candidates, setCandidates] = useState<Candidate[]>([]);
     const [formers, setFormers] = useState<Former[]>([]);
+    const [classes, setClasses] = useState<Path[]>([]);
 
     const [created, setCreated] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    const [activeTab, setActiveTab] = useState(menuItems[0].id);
+    const { activeTab, setActiveTab } = useStore();
 
     const candidateColumns = GetCandidateColumns({candidates, setCandidates});
     const formerColumns = GetFormerColumns({formers, setFormers});
+    const classColumns = GetClassesColumns({classes, setClasses})
 
     const fetchFormers = async () => {
         setIsLoading(true);
@@ -48,11 +55,21 @@ const DashboardAdminPage = () => {
             setIsLoading(false);
         }
     }
-
     const fetchCandidate = async () => {
         setIsLoading(true);
         try {
             const resp = await candidateService.getAll();
+            setCandidates(resp.data);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+    const fetchClasses = async () => {
+        setIsLoading(true);
+        try {
+            const resp = await classeService.getAll();
             setCandidates(resp.data);
         } catch (err) {
             console.error(err);
@@ -76,7 +93,6 @@ const DashboardAdminPage = () => {
             setCreated(false);
         }
     }
-
     const handleSuccessFormer = (isSuccess: boolean) => {
         if (isSuccess && !created) {
 
@@ -89,6 +105,20 @@ const DashboardAdminPage = () => {
             }, 10000);
         } else {
             toast.error("Erreur lors de la création du formateur");
+            setCreated(false);
+        }
+    }
+    const handleSuccessClasse = (isSuccess: boolean) => {
+        if (isSuccess && !created) {
+
+            toast.success("Nouvelle classe !");
+            fetchClasses()
+            setCreated(true);
+            setTimeout(() => {
+                setCreated(false);
+            }, 10000);
+        } else {
+            toast.error("Erreur lors de la création d'un classe");
             setCreated(false);
         }
     }
@@ -108,16 +138,15 @@ const DashboardAdminPage = () => {
             setIsLoading(true);
             setTimeout(() => {
                 console.log("update DB");
-                switch (activeTab){
+                switch (activeTab) {
                     case menuItems[0].id:
                         fetchCandidate();
                         break;
-                        case menuItems[1].id:
-                            // classe
+                    case menuItems[1].id:
+                        fetchClasses();
                         break;
-                        case menuItems[2].id:
-                            fetchFormers();
-                            // formateurs
+                    case menuItems[2].id:
+                        fetchFormers();
                         break;
                     case menuItems[3].id:
                         // centers
@@ -138,16 +167,15 @@ const DashboardAdminPage = () => {
 
     useEffect(() => {
         console.log(activeTab)
-        switch (activeTab){
+        switch (activeTab) {
             case menuItems[0].id:
                 fetchCandidate();
                 break;
             case menuItems[1].id:
-                // classe
+                fetchClasses();
                 break;
             case menuItems[2].id:
                 fetchFormers();
-                // formateurs
                 break;
             case menuItems[3].id:
                 // centers
@@ -161,10 +189,8 @@ const DashboardAdminPage = () => {
     return (
         <div className="flex h-screen bg-gray-100">
             <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} menuItems={menuItems}/>
-
             <main className="flex-1 overflow-y-auto">
                 <HeaderDashboard menuItems={menuItems} activeTab={activeTab}/>
-
                 <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
                     <Tabs
                         value={activeTab}
@@ -184,27 +210,12 @@ const DashboardAdminPage = () => {
                             isLoading={isLoading}
                             handleSuccess={handleSuccessFormer}
                         />
-
-                        <TabsContent value="classes" className="space-y-4">
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Classes</CardTitle>
-                                    <CardDescription>Gérer les classes ici.</CardDescription>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="search-classes">
-                                            Rechercher une classe
-                                        </Label>
-                                        <Input
-                                            id="search-classes"
-                                            placeholder="Search by class name or ID..."
-                                        />
-                                    </div>
-                                    {/* Add class list or table component here */}
-                                </CardContent>
-                            </Card>
-                        </TabsContent>
+                        <ClassesTabContent
+                            columns={classColumns}
+                            classes={classes}
+                            isLoading={isLoading}
+                            handleSuccess={handleSuccessClasse}
+                        />
                         <TabsContent value="centers" className="space-y-4">
                             <Card>
                                 <CardHeader>

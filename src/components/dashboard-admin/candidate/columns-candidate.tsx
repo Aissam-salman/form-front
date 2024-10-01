@@ -1,5 +1,5 @@
 import {ColumnDef} from "@tanstack/react-table";
-import {Button} from "@/components/ui/button";
+import {Button} from "@/components/ui/button.tsx";
 import {ArrowUpDown, MoreHorizontal} from "lucide-react";
 import {
     DropdownMenu,
@@ -8,7 +8,7 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu.tsx";
 import candidateService from "@/service/candidate.service.ts";
 import {toast} from "sonner";
 import {Candidate} from "@/types/Candidate.ts";

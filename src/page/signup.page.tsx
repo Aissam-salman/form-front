@@ -11,7 +11,7 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import AuthService from "@/service/auth.service.ts";
 import {toast, Toaster} from "sonner";
-import {useAuthStore} from "@/hooks/use-auth-store.ts";
+import {useStore} from "@/store/use-store.ts";
 import {useNavigate} from "react-router-dom";
 
 const RegisterSchema = z.object({
@@ -50,7 +50,7 @@ export function SignupPage() {
         },
     });
 
-    const setToken = useAuthStore((state) => state.setToken);
+    const setToken = useStore((state) => state.setToken);
 
     const navigate = useNavigate();
 

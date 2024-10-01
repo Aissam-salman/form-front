@@ -1,13 +1,13 @@
 import {useParams} from "react-router-dom";
-import {useAuthStore} from "@/hooks/use-auth-store.ts";
+import {useStore} from "@/store/use-store.ts";
 
 const CandidatePage = () => {
     const {candidateId} = useParams();
 
-    const token = useAuthStore((state) => state.token);
-    const isConnected = useAuthStore((state) => state.isConnected);
+    const token = useStore((state) => state.token);
+    const isConnected = useStore((state) => state.isConnected);
 
-    const role = useAuthStore((state) => state.role);
+    const role = useStore((state) => state.role);
 
     return (
         <div>

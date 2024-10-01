@@ -3,7 +3,7 @@ import {ReactNode} from "react";
 import appImageHero from "../../public/illu.jpg";
 import {Button} from "@/components/ui/button.tsx";
 import {useNavigate} from "react-router-dom";
-import {useAuthStore} from "@/hooks/use-auth-store.ts";
+import {useStore} from "@/store/use-store.ts";
 
 
 interface FeatureProps {
@@ -29,7 +29,7 @@ const Hero = () => {
 
     const navigate = useNavigate();
 
-    const isConnected = useAuthStore((state) => state.isConnected);
+    const isConnected = useStore((state) => state.isConnected);
 
     const handleConnect = () => {
         if (isConnected) {
