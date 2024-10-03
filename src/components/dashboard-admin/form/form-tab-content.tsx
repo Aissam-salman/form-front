@@ -7,7 +7,6 @@ import {SquarePlus} from "lucide-react";
 import {useState} from "react";
 import DataTable from "@/components/data-table.tsx";
 import NewFormModal from "@/components/dashboard-admin/form/new-form-modal.tsx";
-import {FormTabContentProps} from "@/components/dashboard-admin/form/form-tab-content-props.tsx";
 import {ColumnDef} from "@tanstack/react-table";
 import {Form} from "@/types/Form.ts";
 
