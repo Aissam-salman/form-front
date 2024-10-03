@@ -77,14 +77,15 @@ const DashboardAdminPage = () => {
         setIsLoading(true);
         try {
             const resp = await classeService.getAll();
-            setCandidates(resp.data);
+            console.log(resp.data)
+            setClasses(resp.data);
         } catch (err) {
             console.error(err);
         } finally {
             setIsLoading(false);
         }
     };
-    const fetchCenters = async () => {
+    const fetchCenters      = async () => {
         setIsLoading(true);
         try {
             const resp = await centerService.getAll();
@@ -130,7 +131,7 @@ const DashboardAdminPage = () => {
         if (isSuccess && !created) {
 
             toast.success("Nouvelle classe !");
-            fetchClasses()
+            fetchClasses();
             setCreated(true);
             setTimeout(() => {
                 setCreated(false);

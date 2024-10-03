@@ -62,7 +62,6 @@ function DataTable<TData extends { id: string; }, TValue>({columns, data}: DataT
 
 
     const handleDelete = async (rows: Row<TData>[]) => {
-        console.log("Suppression en cours", rows);
 
         const idsToDelete = rows.map((row) => row.original.id);
 
@@ -83,6 +82,7 @@ function DataTable<TData extends { id: string; }, TValue>({columns, data}: DataT
             console.error("Erreur API " + err);
         }
     }
+
 
     useEffect(() => {
         setItems(data);

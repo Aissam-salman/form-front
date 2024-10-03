@@ -68,7 +68,7 @@ export const GetClassesColumns = ({classes, setClasses}: ClasseColumnsProps): Co
             }
         },
         {
-            accessorKey: "center_name",
+            accessorKey: "center",
             header: ({column}) => {
                 return (
                     <Button
@@ -85,7 +85,7 @@ export const GetClassesColumns = ({classes, setClasses}: ClasseColumnsProps): Co
             }
         },
         {
-            accessorKey: "former_name",
+            accessorKey: "former",
             header: ({column}) => {
                 return (
                     <Button

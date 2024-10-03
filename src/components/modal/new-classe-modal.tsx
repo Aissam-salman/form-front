@@ -18,6 +18,8 @@ import classeService from "@/service/classe.service.ts";
 import formerService from "@/service/former.service.ts";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 import {Former} from "@/types/Former.ts";
+import {Center} from "@/types/Center.ts";
+import centerService from "@/service/center.service.ts";
 
 
 interface NewClasseModalProps {
@@ -27,20 +29,21 @@ interface NewClasseModalProps {
 
 
 const ClasseSchema = z.object({
-    center_name: z.string(),
-    former_name: z.string(),
+    center_id: z.string(),
+    former_id: z.string(),
     date_start: z.string(),
     date_end: z.string()
-})
+});
 
 const NewClasseModal = ({children, onSuccess}: NewClasseModalProps) => {
     const [formers, setFormer] = useState<Former[]>([]);
+    const [centers, setCenters] = useState<Center[]>([]);
 
     const form = useForm<z.infer<typeof ClasseSchema>>({
         resolver: zodResolver(ClasseSchema),
         defaultValues: {
-            center_name: "",
-            former_name: "",
+            center_id: "",
+            former_id: "",
             date_start: "",
             date_end: "",
         },
@@ -49,25 +52,38 @@ const NewClasseModal = ({children, onSuccess}: NewClasseModalProps) => {
 
     const handleCreateClasse = async (data: z.infer<typeof ClasseSchema>) => {
         try {
-            console.log(data)
-            await classeService.create({data : data});
+            const formattedData = {
+                ...data,
+                date_start: new Date(data.date_start).getTime(),
+                date_end: new Date(data.date_end).getTime(),
+            };
+            console.log(formattedData);
+            await classeService.create(formattedData);
             onSuccess(true);
         } catch (error) {
-            console.error(error);
+            console.error(error);               
             onSuccess(false);
         }
     }
 
+    const fetchCenters = async () => {
+        const resp = await centerService.getAll();
+        console.log("Centers response:", resp.data);
+        setCenters(resp.data);
+    }
+
     const fetchFormers = async () => {
-        const resp =  await formerService.getAll();
+        const resp = await formerService.getAll();
+        console.log("Formers response:", resp.data);
         setFormer(resp.data);
     }
 
     useEffect(() => {
-        fetchFormers()
+        fetchFormers();
+        fetchCenters();
     }, []);
 
-    const centers = ["BREST", "ROUBAIX"];
+
 
     return (
         <AlertDialog>
@@ -81,50 +97,57 @@ const NewClasseModal = ({children, onSuccess}: NewClasseModalProps) => {
                         <form onSubmit={form.handleSubmit(handleCreateClasse)} className=" flex flex-col gap-2">
                             <FormField
                                 control={form.control}
-                                name="center_name"
-                                render={({ field }) => (
+                                name="center_id"
+                                render={({field}) => (
                                     <FormItem>
                                         <FormLabel>Centre</FormLabel>
-                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <Select onValueChange={field.onChange}
+                                                defaultValue={field.value}
+                                        >
                                             <FormControl>
                                                 <SelectTrigger>
-                                                    <SelectValue placeholder="Selectionner un centre" />
+                                                    <SelectValue placeholder="Selectionner un centre"/>
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
-                                                {centers && (
+                                                {centers &&
                                                     centers.map((item) => (
-                                                        <SelectItem value={item.toLowerCase()}>{item}</SelectItem>
-                                                    ))
-
-                                                )}
+                                                            <SelectItem key={item.id} value={item.id.toString()     }>
+                                                                {item.name}
+                                                            </SelectItem>
+                                                        )
+                                                    )
+                                                }
                                             </SelectContent>
                                         </Select>
-                                        <FormMessage />
+                                        <FormMessage/>
                                     </FormItem>
                                 )}
                             />
                             <FormField
                                 control={form.control}
-                                name="former_name"
-                                render={({ field }) => (
+                                name="former_id"
+                                render={({field}) => (
                                     <FormItem>
                                         <FormLabel>Formateur</FormLabel>
-                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <Select  onValueChange={field.onChange}
+                                                 defaultValue={field.value}>
                                             <FormControl>
                                                 <SelectTrigger>
-                                                    <SelectValue placeholder="Selectionner un formateur" />
+                                                    <SelectValue placeholder="Selectionner un formateur"/>
                                                 </SelectTrigger>
                                             </FormControl>
-                                            <SelectContent>
-                                                {formers && (
+                                            <SelectContent className={"text-black"}>
+                                                {formers &&     (
                                                     formers.map((item) => (
-                                                        <SelectItem value={item.lastname.toLowerCase()}>{item.lastname}</SelectItem>
+                                                        <SelectItem key={item.id}
+                                                                    value={item.id.toString()}>{item.lastname}</SelectItem>
                                                     ))
-                                                )}
+                                                )
+                                                }
                                             </SelectContent>
                                         </Select>
-                                        <FormMessage />
+                                        <FormMessage/>
                                     </FormItem>
                                 )}
                             />
