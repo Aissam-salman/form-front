@@ -251,7 +251,13 @@ const DashboardAdminPage = () => {
                             isLoading={isLoading}
                             handleSuccess={handleSuccessClasse}
                         />
-                         <CenterTabContent columns={centerColumns} centers={centers} isLoading={isLoading} handleSuccess={handleSuccessCenter}/>
+                         <CenterTabContent
+                             columns={centerColumns}
+                             centers={centers}
+                             isLoading={isLoading}
+                             handleSuccess={handleSuccessCenter}
+                         />
+                        {/*TODO: component for forms*/}
                         <TabsContent value="forms" className="space-y-4">
                             <Card>
                                 <CardHeader>

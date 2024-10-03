@@ -5,7 +5,7 @@ import {SquarePlus} from "lucide-react";
 import {ColumnDef} from "@tanstack/react-table";
 import DataTable from "@/components/data-table.tsx";
 import {Path} from "@/types/Path.ts";
-import NewClasseModal from "@/components/modal/new-classe-modal.tsx";
+import NewClasseModal from "@/components/dashboard-admin/classe/new-classe-modal.tsx";
 
 interface ClassesTabContentProps {
     columns: ColumnDef<Path>[],

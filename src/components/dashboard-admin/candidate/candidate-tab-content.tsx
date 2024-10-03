@@ -7,7 +7,7 @@ import {SquarePlus} from "lucide-react";
 import {useState} from "react";
 import {Candidate} from "@/types/Candidate.ts";
 import {ColumnDef} from "@tanstack/react-table";
-import NewCandidateModal from "@/components/modal/new-candidate-modal.tsx";
+import NewCandidateModal from "@/components/dashboard-admin/candidate/new-candidate-modal.tsx";
 import DataTable from "@/components/data-table.tsx";
 
 interface CandidatesTabContentProps {

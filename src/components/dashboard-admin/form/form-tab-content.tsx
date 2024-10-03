@@ -5,64 +5,61 @@ import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {SquarePlus} from "lucide-react";
 import {useState} from "react";
-import {ColumnDef} from "@tanstack/react-table";
 import DataTable from "@/components/data-table.tsx";
-import {Former} from "@/types/Former.ts";
-import NewFormerModal from "@/components/dashboard-admin/former/new-former-modal.tsx";
+import NewFormModal from "@/components/dashboard-admin/form/new-form-modal.tsx";
+import {FormTabContentProps} from "@/components/dashboard-admin/form/form-tab-content-props.tsx";
+import {ColumnDef} from "@tanstack/react-table";
+import {Form} from "@/types/Form.ts";
 
-interface CandidatesTabContentProps {
-    columns: ColumnDef<Former>[],
-    formers: Former[],
+interface FormTabContentProps {
+    columns: ColumnDef<Form>[],
+    forms: Form[],
     isLoading: boolean,
     handleSuccess: (isSuccess: boolean) => void,
 }
 
-const FormersTabContent: React.FC<CandidatesTabContentProps> = ({
-                                                                       columns,
-                                                                       formers,
-                                                                       isLoading,
-                                                                       handleSuccess,
-                                                                   }) => {
+
+const FormTabContent: React.FC<FormTabContentProps> = ({columns, forms, isLoading, handleSuccess}) => {
     const [searchTerm, setSearchTerm] = useState("");
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
     };
 
-    const filteredFormers = formers.filter((former) =>
-        `${former.firstname} ${former.lastname}`
+    const filteredForms = forms.filter((form) =>
+        `${form.title}`
             .toLowerCase()
             .includes(searchTerm.toLowerCase())
     );
 
     return (
-        <TabsContent value="formers" className="space-y-4">
+        <TabsContent value="forms" className="space-y-4">
             <Card>
                 <CardHeader>
-                    <CardTitle>Formateurs</CardTitle>
-                    <CardDescription>Gérer les formateurs ici.</CardDescription>
+                    <CardTitle>Formulaires</CardTitle>
+                    <CardDescription>Gérer les formulaires ici.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="flex justify-between mb-2">
                         <div>
-                            <Label htmlFor="search-users">Rechercher un formateur</Label>
+                            <Label htmlFor="search">Rechercher un formulaire</Label>
                             <Input
-                                id="search-users"
-                                placeholder="Par nom..."
+                                id="search"
+                                placeholder="Par titre..."
                                 value={searchTerm}
                                 onChange={handleSearchChange}
                             />
                         </div>
-                        <NewFormerModal onSuccess={handleSuccess}>
+                        <NewFormModal onSuccess={handleSuccess}>
                             <Button className="self-end">
                                 <SquarePlus className="h-5 w-5"/>
                             </Button>
-                        </NewFormerModal>
+                        </NewFormModal>
                     </div>
                     {isLoading ? (
                         <div>Loading...</div>
                     ) : (
-                        <DataTable key={filteredFormers.length} columns={columns} data={[...filteredFormers]} />
+                        <DataTable key={filteredForms.length} columns={columns} data={[...filteredForms]} />
                     )}
                 </CardContent>
             </Card>
@@ -70,4 +67,4 @@ const FormersTabContent: React.FC<CandidatesTabContentProps> = ({
     );
 };
 
-export default FormersTabContent;
+export default FormTabContent;

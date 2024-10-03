@@ -5,7 +5,7 @@ import {SquarePlus} from "lucide-react";
 import {ColumnDef} from "@tanstack/react-table";
 import DataTable from "@/components/data-table.tsx";
 import {Center} from "@/types/Center.ts";
-import NewCenterModal from "@/components/modal/new-center-modal.tsx";
+import NewCenterModal from "@/components/dashboard-admin/center/new-center-modal.tsx";
 
 interface CenterTabContentProps {
     columns: ColumnDef<Center>[],
