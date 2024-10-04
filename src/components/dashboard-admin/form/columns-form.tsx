@@ -9,32 +9,32 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
-import candidateService from "@/service/candidate.service.ts";
 import {toast} from "sonner";
-import {Candidate} from "@/types/Candidate.ts";
 import ConfirmModal from "@/components/modal/confirm-modal.tsx";
 import {useNavigate} from "react-router-dom";
-import {Checkbox} from "@/components/ui/checkbox.tsx"; // Pour les notifications
+import {Checkbox} from "@/components/ui/checkbox.tsx";
+import {Form} from "@/types/Form.ts";
+import formService from "@/service/form.service.ts"; // Pour les notifications
 
-interface CandidateColumnsProps {
-    candidates: Candidate[];
-    setCandidates: React.Dispatch<React.SetStateAction<Candidate[]>>;
+interface FormColumnsProps {
+    forms: Form[];
+    setForms: React.Dispatch<React.SetStateAction<Form[]>>;
 }
 
-export const GetCandidateColumns = ({candidates, setCandidates}: CandidateColumnsProps): ColumnDef<Candidate>[]  => {
+export const GetFormColumns = ({forms, setForms}: FormColumnsProps): ColumnDef<Form>[]  => {
 
     const onCopy = (email: string) => {
         navigator.clipboard.writeText(email);
-        toast.success("Email copié dans le presse-papier !");
+        toast.success("Titre copié dans le presse-papier !");
     };
 
-    const deleteCandidate = async (id: string) => {
+    const deleteForm = async (id: string) => {
         try {
-            await candidateService.delete(id);
-            setCandidates(candidates.filter((candidate) => candidate.id !== id));
-            toast.success(`Candidat ${id} supprimé avec succès.`);
+            await formService.delete(id);
+            setForms(forms.filter((form) => form.id !== id));
+            toast.success(`Formulaire ${id} supprimé avec succès.`);
         } catch (err) {
-            toast.error("Erreur lors de la suppression du candidat");
+            toast.error("Erreur lors de la suppression du formulaire");
             console.error("Erreur API " + err);
         }
     };
@@ -66,73 +66,73 @@ export const GetCandidateColumns = ({candidates, setCandidates}: CandidateColumn
         },
         {
             accessorKey: "id",
-            header: "Numéro de candidat",
+            header: "Numéro de formulaire",
             meta: {
                 displayName: "Id"
             }
         },
         {
-            accessorKey: "firstname",
+            accessorKey: "title",
             header: ({column}) => {
                 return (
                     <Button
                         variant="ghost"
                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     >
-                        Prénom
+                        Title
                         <ArrowUpDown className="ml-2 h-4 w-4"/>
                     </Button>
                 )
             },
             meta: {
-                displayName: "Prénom"
+                displayName: "Titre"
             }
         },
         {
-            accessorKey: "lastname",
+            accessorKey: "description",
             header: ({column}) => {
                 return (
                     <Button
                         variant="ghost"
                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     >
-                        Nom
+                        Description
                         <ArrowUpDown className="ml-2 h-4 w-4"/>
                     </Button>
                 )
             },
             meta: {
-                displayName: "Nom"
+                displayName: "Description"
             }
         },
         {
-            accessorKey: "email",
+            accessorKey: "isTemplate",
             header: ({column}) => {
                 return (
                     <Button
                         variant="ghost"
                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     >
-                        Email
+                        Template
                         <ArrowUpDown className="ml-2 h-4 w-4"/>
                     </Button>
                 )
             },
             meta: {
-                displayName: "Email"
+                displayName: "Template"
             }
         },
         {
-            accessorKey: "phone_number",
-            header: "Téléphone",
+            accessorKey: "former",
+            header: "formateur",
             meta: {
-                displayName: "Téléphone",
+                displayName: "formateur",
             }
         },
         {
             id: "actions",
             cell: ({row}) => {
-                const candidate = row.original;
+                const form = row.original;
 
                 return (
                     <DropdownMenu>
@@ -144,19 +144,19 @@ export const GetCandidateColumns = ({candidates, setCandidates}: CandidateColumn
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem onClick={() => onCopy(candidate.email)}>
-                                Copy email
+                            <DropdownMenuItem onClick={() => onCopy(form.title)}>
+                                Copy du titre
                             </DropdownMenuItem>
                             <DropdownMenuSeparator/>
-                            <DropdownMenuItem onClick={() => navigate(`/candidate/details/${candidate.id}`)}>
-                                Détails candidat
+                            <DropdownMenuItem onClick={() => navigate(`/forms/details/${form.id}`)}>
+                                Détails du formulaire
                             </DropdownMenuItem>
                             <DropdownMenuItem
                                 onSelect={(e) => e.preventDefault()}
                                 className="text-red-400 bg-red-100 cursor-pointer"
                             >
-                                <ConfirmModal onConfirm={() => deleteCandidate(candidate.id)}>
-                                    <span>Supprimer le candidat</span>
+                                <ConfirmModal onConfirm={() => deleteForm(form.id)}>
+                                    <span>Supprimer le formulaire</span>
                                 </ConfirmModal>
                             </DropdownMenuItem>
                         </DropdownMenuContent>

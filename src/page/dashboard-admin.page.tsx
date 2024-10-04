@@ -1,9 +1,6 @@
 import {useEffect, useState} from "react";
 import {BookIcon, BookOpenIcon, FileTextIcon, HomeIcon, UsersIcon,} from "lucide-react";
-import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/components/ui/card.tsx";
-import {Label} from "@/components/ui/label.tsx";
-import {Input} from "@/components/ui/input.tsx";
-import {Tabs, TabsContent} from "@/components/ui/tabs.tsx";
+import {Tabs} from "@/components/ui/tabs.tsx";
 import {Candidate} from "@/types/Candidate.ts";
 import candidateService from "@/service/candidate.service.ts";
 import {toast} from "sonner";
@@ -25,6 +22,9 @@ import {GetCentersColumns} from "@/components/dashboard-admin/center/columns-cen
 import {Center} from "@/types/Center.ts";
 import centerService from "@/service/center.service.ts";
 import CenterTabContent from "@/components/dashboard-admin/center/center-tab-content.tsx";
+import {Form} from "@/types/Form.ts";
+import {GetFormColumns} from "@/components/dashboard-admin/form/columns-form.tsx";
+import FormTabContent from "@/components/dashboard-admin/form/form-tab-content.tsx";
 
 const DashboardAdminPage = () => {
     const menuItems = [
@@ -39,16 +39,18 @@ const DashboardAdminPage = () => {
     const [formers, setFormers] = useState<Former[]>([]);
     const [classes, setClasses] = useState<Path[]>([]);
     const [centers, setCenters] = useState<Center[]>([]);
+    const [forms, setForms] = useState<Form[]>([]);
 
     const [created, setCreated] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    const { activeTab, setActiveTab } = useStore();
+    const {activeTab, setActiveTab} = useStore();
 
     const candidateColumns = GetCandidateColumns({candidates, setCandidates});
     const formerColumns = GetFormerColumns({formers, setFormers});
     const classColumns = GetClassesColumns({classes, setClasses});
     const centerColumns = GetCentersColumns({centers, setCenters})
+    const formColumns = GetFormColumns({forms, setForms});
 
 
     const fetchFormers = async () => {
@@ -85,11 +87,22 @@ const DashboardAdminPage = () => {
             setIsLoading(false);
         }
     };
-    const fetchCenters      = async () => {
+    const fetchCenters = async () => {
         setIsLoading(true);
         try {
             const resp = await centerService.getAll();
             setCenters(resp.data);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+    const fetchForms = async () => {
+        setIsLoading(true);
+        try {
+            const resp = await formerService.getAll();
+            setForms(resp.data);
         } catch (err) {
             console.error(err);
         } finally {
@@ -155,47 +168,61 @@ const DashboardAdminPage = () => {
             setCreated(false);
         }
     }
-
-// handle SSE from server, maybe is useless
-    useEffect(() => {
-        if (created) {
-            return;
-        }
-
-        const eventSource = new EventSource(
-            "http://localhost:8081/api/v1/sse/events"
-        );
-
-        eventSource.addEventListener("update", (event) => {
-            console.log("updated: " + event.data);
-            setIsLoading(true);
+    const handleSuccessForm = (isSuccess: boolean) => {
+        if (isSuccess && !created) {
+            toast.success("Nouveau formulaire !");
+            fetchForms()
+            setCreated(true);
             setTimeout(() => {
-                console.log("update DB");
-                switch (activeTab) {
-                    case menuItems[0].id:
-                        fetchCandidate();
-                        break;
-                    case menuItems[1].id:
-                        fetchClasses();
-                        break;
-                    case menuItems[2].id:
-                        fetchFormers();
-                        break;
-                    case menuItems[3].id:
-                        fetchCenters();
-                        break;
-                    case menuItems[4].id:
-                        //forms
-                        break;
-                }
-            }, 5000)
-        });
+                setCreated(false);
+            }, 10000);
+            //TODO:  ajouter une redirection vers l'édition de formulaire
+        } else {
+            toast.error("Erreur lors de la création d'un formulaire");
+            setCreated(false);
+        }
+    }
 
-        return () => {
-            setIsLoading(false);
-            eventSource.close();
-        };
-    }, [activeTab, created]);
+// TODO: handle SSE from server, maybe is useless
+//     useEffect(() => {
+//         if (created) {
+//             return;
+//         }
+//
+//         const eventSource = new EventSource(
+//             "http://localhost:8081/api/v1/sse/events"
+//         );
+//
+//         eventSource.addEventListener("update", (event) => {
+//             console.log("updated: " + event.data);
+//             setIsLoading(true);
+//             setTimeout(() => {
+//                 console.log("update DB");
+//                 switch (activeTab) {
+//                     case menuItems[0].id:
+//                         fetchCandidate();
+//                         break;
+//                     case menuItems[1].id:
+//                         fetchClasses();
+//                         break;
+//                     case menuItems[2].id:
+//                         fetchFormers();
+//                         break;
+//                     case menuItems[3].id:
+//                         fetchCenters();
+//                         break;
+//                     case menuItems[4].id:
+//                         fetchForms();
+//                         break;
+//                 }
+//             }, 5000)
+//         });
+//
+//         return () => {
+//             setIsLoading(false);
+//             eventSource.close();
+//         };
+//     }, [activeTab, created]);
 
     useEffect(() => {
         console.log(activeTab)
@@ -213,7 +240,7 @@ const DashboardAdminPage = () => {
                 fetchCenters();
                 break;
             case menuItems[4].id:
-                //forms
+                fetchForms();
                 break;
         }
     }, [activeTab]);
@@ -224,7 +251,7 @@ const DashboardAdminPage = () => {
             <main className="flex-1 overflow-y-auto">
                 <HeaderDashboard menuItems={menuItems} activeTab={activeTab}/>
                 <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-                        {/* FIX: MenuContext change with tab */}
+                    {/* // ! MenuContext change with tab */}
                     <Tabs
                         value={activeTab}
                         onValueChange={setActiveTab}
@@ -251,33 +278,20 @@ const DashboardAdminPage = () => {
                             isLoading={isLoading}
                             handleSuccess={handleSuccessClasse}
                         />
-                         <CenterTabContent
-                             columns={centerColumns}
-                             centers={centers}
-                             isLoading={isLoading}
-                             handleSuccess={handleSuccessCenter}
-                         />
-                        {/*TODO: component for forms*/}
-                        <TabsContent value="forms" className="space-y-4">
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Formulaires</CardTitle>
-                                    <CardDescription>Gérer les formulaires ici.</CardDescription>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="search-forms">
-                                            Rechercher un formulaire
-                                        </Label>
-                                        <Input
-                                            id="search-forms"
-                                            placeholder="Search by form name or type..."
-                                        />
-                                    </div>
-                                    {/* Add form list or table component here */}
-                                </CardContent>
-                            </Card>
-                        </TabsContent>
+                        <CenterTabContent
+                            columns={centerColumns}
+                            centers={centers}
+                            isLoading={isLoading}
+                            handleSuccess={handleSuccessCenter}
+                        />
+
+                        {/* ! handle Former in back to recive only lastname ? */}
+                        <FormTabContent
+                            columns={formColumns}
+                            forms={forms}
+                            isLoading={isLoading}
+                            handleSuccess={handleSuccessForm}
+                        />
                     </Tabs>
                 </div>
             </main>

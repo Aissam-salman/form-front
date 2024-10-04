@@ -14,7 +14,7 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form.tsx";
 import {Input} from "@/components/ui/input.tsx";
-import AuthService from "@/service/auth.service.ts";
+import formService from "@/service/form.service.ts";
 
 
 interface NewFormModalProps {
@@ -22,26 +22,9 @@ interface NewFormModalProps {
     onSuccess: (isSuccess: boolean) => void;
 }
 
-
+//TODO: schema of form
 const FormSchema = z.object({
-    firstname: z.string({
-        required_error: "Please enter first name.",
-    }),
-    lastname: z.string({
-        required_error: "Please enter last name.",
-    }),
-    email: z.string({
-        required_error: "Please enter email.",
-    }).email(),
-    password: z.string({
-        required_error: "Please enter password.",
-    }),
-    role: z.string({
-        required_error: "Please select an role.",
-    }),
-    phone_number: z.string({
-        required_error: "Please enter phone number valid.",
-    }).max(10),
+
 })
 
 const NewFormModal = ({children, onSuccess}: NewFormModalProps) => {
@@ -49,12 +32,7 @@ const NewFormModal = ({children, onSuccess}: NewFormModalProps) => {
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
-            firstname: "",
-            lastname: "",
-            email: "",
-            password: "",
-            phone_number: "",
-            role: "CANDIDATE",
+//TODO: default value for form
         },
     });
 
@@ -62,7 +40,8 @@ const NewFormModal = ({children, onSuccess}: NewFormModalProps) => {
     const handleCreateCandidate = async (data: z.infer<typeof FormSchema>) => {
         try {
             console.log(data)
-            await AuthService.signup(data);
+            // ! fix data type
+            await formService.create(data);
             onSuccess(true);
         } catch (error) {
             console.error(error);
@@ -77,9 +56,10 @@ const NewFormModal = ({children, onSuccess}: NewFormModalProps) => {
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Créer un nouveau candidat</AlertDialogTitle>
+                    <AlertDialogTitle>Créer un nouveau formulaire</AlertDialogTitle>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(handleCreateCandidate)} className=" flex flex-col gap-2">
+                            {/*! change to match with schema */}
                             <FormField
                                 control={form.control}
                                 name="firstname"
