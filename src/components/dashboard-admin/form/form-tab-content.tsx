@@ -6,19 +6,18 @@ import {Button} from "@/components/ui/button.tsx";
 import {SquarePlus} from "lucide-react";
 import {useState} from "react";
 import DataTable from "@/components/data-table.tsx";
-import NewFormModal from "@/components/dashboard-admin/form/new-form-modal.tsx";
 import {ColumnDef} from "@tanstack/react-table";
 import {Form} from "@/types/Form.ts";
+import {useNavigate} from "react-router-dom";
 
 interface FormTabContentProps {
     columns: ColumnDef<Form>[],
     forms: Form[],
     isLoading: boolean,
-    handleSuccess: (isSuccess: boolean) => void,
 }
 
 
-const FormTabContent: React.FC<FormTabContentProps> = ({columns, forms, isLoading, handleSuccess}) => {
+const FormTabContent: React.FC<FormTabContentProps> = ({columns, forms, isLoading}) => {
     const [searchTerm, setSearchTerm] = useState("");
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,6 +29,8 @@ const FormTabContent: React.FC<FormTabContentProps> = ({columns, forms, isLoadin
             .toLowerCase()
             .includes(searchTerm.toLowerCase())
     );
+
+                const navigate = useNavigate();
 
     return (
         <TabsContent value="forms" className="space-y-4">
@@ -49,11 +50,9 @@ const FormTabContent: React.FC<FormTabContentProps> = ({columns, forms, isLoadin
                                 onChange={handleSearchChange}
                             />
                         </div>
-                        <NewFormModal onSuccess={handleSuccess}>
-                            <Button className="self-end">
+                            <Button className="self-end" onClick={() => navigate("/forms.new")}>
                                 <SquarePlus className="h-5 w-5"/>
                             </Button>
-                        </NewFormModal>
                     </div>
                     {isLoading ? (
                         <div>Loading...</div>

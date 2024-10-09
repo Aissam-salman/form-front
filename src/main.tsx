@@ -10,7 +10,7 @@ import CandidatePage from "@/page/candidate.page.tsx";
 import ForgotPage from "@/page/forgot.page.tsx";
 import DashboardAdminPage from "@/page/dashboard-admin.page.tsx";
 import CandidateDetailsPage from "@/page/candidate-details.page.tsx";
-import NewForm from './page/new-form.tsx';
+import NewFormPage from './page/new-form.page.tsx';
 
 
 const router = createBrowserRouter([
@@ -47,8 +47,8 @@ const router = createBrowserRouter([
         element: <CandidateDetailsPage />
     },
     {
-        path: "/new-form",
-        element: <NewForm />
+        path: "/forms.new",
+        element: <NewFormPage />
     }
 ])
 

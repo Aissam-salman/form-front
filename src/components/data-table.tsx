@@ -76,9 +76,9 @@ function DataTable<TData extends { id: string; }, TValue>({columns, data}: DataT
 
             setItems(updatedCandidates);
 
-            toast.success("Candidats supprimés avec succès.");
+            toast.success("Suppression réussite.");
         } catch (err) {
-            toast.error("Erreur lors de la suppression des candidats.");
+            toast.error("Erreur lors de la suppression");
             console.error("Erreur API " + err);
         }
     }

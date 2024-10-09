@@ -25,6 +25,7 @@ import CenterTabContent from "@/components/dashboard-admin/center/center-tab-con
 import {Form} from "@/types/Form.ts";
 import {GetFormColumns} from "@/components/dashboard-admin/form/columns-form.tsx";
 import FormTabContent from "@/components/dashboard-admin/form/form-tab-content.tsx";
+import formService from "@/service/form.service.ts";
 
 const DashboardAdminPage = () => {
     const menuItems = [
@@ -101,7 +102,8 @@ const DashboardAdminPage = () => {
     const fetchForms = async () => {
         setIsLoading(true);
         try {
-            const resp = await formerService.getAll();
+            const resp = await formService.getAll();
+            console.log(resp.data)
             setForms(resp.data);
         } catch (err) {
             console.error(err);
@@ -168,61 +170,8 @@ const DashboardAdminPage = () => {
             setCreated(false);
         }
     }
-    const handleSuccessForm = (isSuccess: boolean) => {
-        if (isSuccess && !created) {
-            toast.success("Nouveau formulaire !");
-            fetchForms()
-            setCreated(true);
-            setTimeout(() => {
-                setCreated(false);
-            }, 10000);
-            //TODO:  ajouter une redirection vers l'édition de formulaire
-        } else {
-            toast.error("Erreur lors de la création d'un formulaire");
-            setCreated(false);
-        }
-    }
 
-// TODO: handle SSE from server, maybe is useless
-//     useEffect(() => {
-//         if (created) {
-//             return;
-//         }
-//
-//         const eventSource = new EventSource(
-//             "http://localhost:8081/api/v1/sse/events"
-//         );
-//
-//         eventSource.addEventListener("update", (event) => {
-//             console.log("updated: " + event.data);
-//             setIsLoading(true);
-//             setTimeout(() => {
-//                 console.log("update DB");
-//                 switch (activeTab) {
-//                     case menuItems[0].id:
-//                         fetchCandidate();
-//                         break;
-//                     case menuItems[1].id:
-//                         fetchClasses();
-//                         break;
-//                     case menuItems[2].id:
-//                         fetchFormers();
-//                         break;
-//                     case menuItems[3].id:
-//                         fetchCenters();
-//                         break;
-//                     case menuItems[4].id:
-//                         fetchForms();
-//                         break;
-//                 }
-//             }, 5000)
-//         });
-//
-//         return () => {
-//             setIsLoading(false);
-//             eventSource.close();
-//         };
-//     }, [activeTab, created]);
+
 
     useEffect(() => {
         console.log(activeTab)
@@ -290,7 +239,6 @@ const DashboardAdminPage = () => {
                             columns={formColumns}
                             forms={forms}
                             isLoading={isLoading}
-                            handleSuccess={handleSuccessForm}
                         />
                     </Tabs>
                 </div>
