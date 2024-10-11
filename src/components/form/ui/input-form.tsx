@@ -2,7 +2,6 @@ import {Input} from "@/components/ui/input.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {Textarea} from "@/components/ui/textarea.tsx";
 import {Checkbox} from "@/components/ui/checkbox.tsx";
-import React, {useState} from "react";
 
 interface InputFormProps {
     label: string;
@@ -22,43 +21,15 @@ export const InputFormWithLabel = ({
                                        label,
                                        type,
                                        placeholder,
-                                       onLabelChange,
                                    }: {
     label: string;
     type: string;
     placeholder: string;
-    onLabelChange: (newLabel: string) => void;
 }) => {
-    const [isEditing, setIsEditing] = useState(false);
-    const [currentLabel, setCurrentLabel] = useState(label);
-
-    const handleLabelClick = () => {
-        setIsEditing(true);
-    };
-
-    const handleLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCurrentLabel(e.target.value);
-        onLabelChange(e.target.value); // Notify parent component of label change
-    };
-
-    const handleBlur = () => {
-        setIsEditing(false);
-    };
-
     return (
-        <div>
-            {isEditing ? (
-                <input
-                    type="text"
-                    value={currentLabel}
-                    onChange={handleLabelChange}
-                    onBlur={handleBlur}
-                    autoFocus
-                />
-            ) : (
-                <label onClick={handleLabelClick}>{currentLabel || "Click to edit label"}</label>
-            )}
-            <input type={type} placeholder={placeholder} />
+        <div className="space-y-2">
+            <Label htmlFor={label.toLowerCase()}>{label}</Label>
+            <Input type={type} id={label.toLowerCase()} placeholder={placeholder}/>
         </div>
     );
 };

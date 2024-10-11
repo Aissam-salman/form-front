@@ -1,12 +1,14 @@
 import {forwardRef, HTMLAttributes, useState} from "react";
+import {cn} from "@/lib/utils.ts";
 
 interface EditableTitleProps extends HTMLAttributes<HTMLHeadingElement> {
     label: string;
+    className?: string;
 }
 
-export const Title = forwardRef<HTMLHeadingElement, EditableTitleProps>(({label, ...props}, ref) => {
+export const Title = forwardRef<HTMLHeadingElement, EditableTitleProps>(({label, className, ...props}, ref) => {
     return (
-        <h1 ref={ref} className="text-4xl font-bold mb-4" {...props}>
+        <h1 ref={ref} className={cn("text-4xl font-bold mb-4", className)} {...props}>
             {label}
         </h1>
     );
