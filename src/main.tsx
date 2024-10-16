@@ -12,6 +12,8 @@ import DashboardAdminPage from "@/page/dashboard-admin.page.tsx";
 import CandidateDetailsPage from "@/page/candidate-details.page.tsx";
 import NewFormPage from './page/new-form.page.tsx';
 import PrepaCompetencePage from "@/page/prepa-competence.page.tsx";
+import CenterPage from '@/page/center.page.tsx';
+import CenterDetailsPage from '@/page/center-details.page.tsx';
 
 
 const router = createBrowserRouter([
@@ -46,6 +48,14 @@ const router = createBrowserRouter([
     {
         path: "/candidate/details/:candidateId",
         element: <CandidateDetailsPage />
+    },
+    {
+        path: "/center/:centerId",
+        element: <CenterPage />
+    },
+    {
+        path: "/centers/details/:centerId",
+        element: <CenterDetailsPage />
     },
     {
         path: "/forms.new",
