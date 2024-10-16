@@ -5,7 +5,7 @@ import {Checkbox} from "@/components/ui/checkbox.tsx";
 
 interface InputFormProps {
     label: string;
-    type: string;
+    type?: string;
     placeholder?: string;
     className?: string;
 }
