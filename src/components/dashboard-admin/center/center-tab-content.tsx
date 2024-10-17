@@ -15,11 +15,11 @@ interface CenterTabContentProps {
 }
 
 const CenterTabContent: React.FC<CenterTabContentProps> = ({
-                                                                       columns,
-                                                                       centers,
-                                                                       isLoading,
-                                                                       handleSuccess,
-                                                                   }) => {
+                                                                    columns,
+                                                                    centers,
+                                                                    isLoading,
+                                                                    handleSuccess,
+                                                                }) => {
     return (
         <TabsContent value="centers" className="space-y-4">
             <Card>
