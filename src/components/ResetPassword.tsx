@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import AuthService from '@/service/auth.service';
+import { AuthResetPassword } from '@/dto/AuthResetPassword';
+import { Button } from '@/components/ui/button';
 
 const ResetPassword = () => {
     const { token } = useParams<{ token: string }>();
@@ -14,8 +16,9 @@ const ResetPassword = () => {
             return;
         }
 
+        const requestData: AuthResetPassword = { token: token!, password: data.password };
         try {
-            await axios.post('/api/v1/auth/reset-password', { token, password: data.password });
+            await AuthService.resetPassword(requestData);
             setMessage('Votre mot de passe a été réinitialisé avec succès.');
         } catch {
             setMessage('Erreur lors de la réinitialisation du mot de passe.');
@@ -41,12 +44,9 @@ const ResetPassword = () => {
                         required
                         className="w-full p-3 border border-gray-300 rounded-lg"
                     />
-                    <button
-                        type="submit"
-                        className="w-full p-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                    >
+                    <Button type="submit" className="w-full p-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
                         Réinitialiser le mot de passe
-                    </button>
+                    </Button>
                 </form>
                 {message && <p className="mt-4 text-center text-red-500">{message}</p>}
             </div>

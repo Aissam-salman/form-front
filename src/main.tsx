@@ -12,6 +12,8 @@ import DashboardAdminPage from "@/page/dashboard-admin.page.tsx";
 import CandidateDetailsPage from "@/page/candidate-details.page.tsx";
 import NewFormPage from './page/new-form.page.tsx';
 import PrepaCompetencePage from "@/page/prepa-competence.page.tsx";
+import ResetPassword from './components/ResetPassword.tsx';
+import ForgotPassword from './components/ForgotPassword.tsx';
 
 
 const router = createBrowserRouter([
@@ -25,7 +27,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/forgot-password",
-        element: <ForgotPage />
+        element: <ForgotPassword />
     },
     {
         path: "/signup",
@@ -54,6 +56,10 @@ const router = createBrowserRouter([
     {
         path: "/forms/prepa-competence",
         element: <PrepaCompetencePage />
+    },
+    {
+        path: "/reset-password/:token",
+        element: <ResetPassword />
     }
 ])
 

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
+import AuthService from '@/service/auth.service';
+import { AuthForgotPassword } from '@/dto/AuthForgotPassword';
 import { Button } from '@/components/ui/button';
 
 const ForgotPassword = () => {
@@ -8,8 +9,9 @@ const ForgotPassword = () => {
     const [message, setMessage] = useState('');
 
     const onSubmit = async (data: { email: string }) => {
+        const requestData: AuthForgotPassword = { email: data.email };
         try {
-            await axios.post('/apiv1/auth/forgot-password', data);
+            await AuthService.forgotPassword(requestData);
             setMessage('Un email de réinitialisation a été envoyé.');
         } catch {
             setMessage('Erreur lors de l\'envoi de l\'email.');
@@ -28,10 +30,7 @@ const ForgotPassword = () => {
                         required
                         className="w-full p-3 border border-gray-300 rounded-lg"
                     />
-                    <Button
-                        type="submit"
-                        className="w-full p-3"
-                    >
+                    <Button type="submit" className="w-full p-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
                         Réinitialiser le mot de passe
                     </Button>
                 </form>
