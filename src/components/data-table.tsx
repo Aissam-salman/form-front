@@ -142,7 +142,7 @@ function DataTable<TData extends { id: string; }, TValue>({columns, data}: DataT
                 </div>
                 <div className="flex-1 mt-1 text-sm text-muted-foreground">
                     {table.getFilteredSelectedRowModel().rows.length} /{" "}
-                    {table.getFilteredRowModel().rows.length} colonne(s) selectionné.
+                    {table.getFilteredRowModel().rows.length} ligne(s) selectionnée(s).
                 </div>
                 <div className="flex items-center justify-between py-4">
                     <div>

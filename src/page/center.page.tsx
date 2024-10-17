@@ -5,12 +5,10 @@ const CenterPage = () => {
 
     return (
         <div>
-            <>
                 <span>
                     centerd: {centerId}
                 </span>
 
-            </>
             <h1>"Page du Center"</h1>
         </div>
     );
