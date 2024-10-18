@@ -12,6 +12,7 @@ import DashboardAdminPage from "@/page/dashboard-admin.page.tsx";
 import CandidateDetailsPage from "@/page/candidate-details.page.tsx";
 import NewFormPage from './page/new-form.page.tsx';
 import PrepaCompetencePage from "@/page/prepa-competence.page.tsx";
+import ClassDetailsPage from "@/page/class-details.page.tsx";
 import CenterPage from '@/page/center.page.tsx';
 import CenterDetailsPage from '@/page/center-details.page.tsx';
 
@@ -64,6 +65,10 @@ const router = createBrowserRouter([
     {
         path: "/forms/prepa-competence",
         element: <PrepaCompetencePage />
+    },
+    {
+        path: "/classes/details/:classId",
+        element: <ClassDetailsPage />
     }
 ])
 
