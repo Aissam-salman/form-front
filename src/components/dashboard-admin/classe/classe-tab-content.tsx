@@ -28,7 +28,7 @@ const ClassesTabContent: React.FC<ClassesTabContentProps> = ({
                     <CardDescription>Gérer les classes ici.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <div className="flex justify-between mb-2">
+                    <div className="flex justify-end mb-2">
                         <NewClasseModal onSuccess={handleSuccess}>
                             <Button className="self-end">
                                 <SquarePlus className="h-5 w-5"/>

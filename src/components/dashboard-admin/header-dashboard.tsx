@@ -1,5 +1,8 @@
 import {Button} from "@/components/ui/button.tsx";
 import {BellIcon, Settings2Icon} from "lucide-react";
+import {useNavigate} from "react-router-dom";
+import { useStore } from "@/store/use-store.ts";
+
 
 interface MenuItem {
     id: string;
@@ -12,8 +15,14 @@ interface HeaderProps {
 }
 
 const HeaderDashboard = ({menuItems, activeTab}: HeaderProps) => {
-    const activeLabel = menuItems.find((item) => item.id === activeTab)?.label || 'Dashboard';
+    const navigate = useNavigate();
+    const logout = useStore((state) => state.logout);
 
+    const activeLabel = menuItems.find((item) => item.id === activeTab)?.label || 'Dashboard';
+    const handleLogout = () => {
+        logout();
+        navigate("/login");
+    };
     return (
         <header className="bg-white shadow-sm">
             <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
@@ -29,6 +38,10 @@ const HeaderDashboard = ({menuItems, activeTab}: HeaderProps) => {
                         {/* TODO: add dropdown with logout, profile */}
                         <Settings2Icon className="h-5 w-5" />
                     </Button>
+                    <Button variant="outline" onClick={handleLogout}>
+                        Déconnexion
+                    </Button>
+
                 </div>
             </div>
         </header>

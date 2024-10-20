@@ -27,8 +27,8 @@
         "./src/*"
       ]
     },
-    "include": [
+  },
+  "include": [
       "src"
     ]
-  }
 }

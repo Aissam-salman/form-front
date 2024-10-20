@@ -5,8 +5,9 @@ import {Checkbox} from "@/components/ui/checkbox.tsx";
 
 interface InputFormProps {
     label: string;
-    type: string;
+    type?: string;
     placeholder?: string;
+    className?: string;
 }
 
 
@@ -35,11 +36,11 @@ export const InputFormWithLabel = ({
 };
 
 
-export const TextareaForm = ({label, placeholder}: InputFormProps) => {
+export const TextareaForm = ({label, placeholder, className}: InputFormProps) => {
     return (
         <div className="space-y-2">
-            <Label>{label}</Label>
-            <Textarea placeholder={placeholder}/>
+            <Label htmlFor={label.toLowerCase()}>{label}</Label>
+            <Textarea className={className} placeholder={placeholder} id={label.toLowerCase()}/>
         </div>
     )
 }

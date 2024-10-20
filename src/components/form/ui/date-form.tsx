@@ -14,7 +14,7 @@ export const DateForm = ({label}: DateFormProps) => {
     const [date, setDate] = useState<Date | undefined>(new Date());
 
     return (
-        <div className="space-y-2">
+        <div className="space-y-2 flex flex-col">
             <Label>{label}</Label>
             <Popover>
                 <PopoverTrigger asChild>

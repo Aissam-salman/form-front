@@ -5,7 +5,7 @@ interface RadioFormProps {
     options: RadioGroupItem[];
 }
 
-type RadioGroupItem = {
+export type RadioGroupItem = {
     value: string;
     displayName: string;
 }

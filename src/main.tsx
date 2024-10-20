@@ -14,6 +14,9 @@ import NewFormPage from './page/new-form.page.tsx';
 import PrepaCompetencePage from "@/page/prepa-competence.page.tsx";
 import ResetPassword from './components/ResetPassword.tsx';
 import ForgotPassword from './components/ForgotPassword.tsx';
+import ClassDetailsPage from "@/page/class-details.page.tsx";
+import CenterPage from '@/page/center.page.tsx';
+import CenterDetailsPage from '@/page/center-details.page.tsx';
 
 
 const router = createBrowserRouter([
@@ -50,6 +53,14 @@ const router = createBrowserRouter([
         element: <CandidateDetailsPage />
     },
     {
+        path: "/center/:centerId",
+        element: <CenterPage />
+    },
+    {
+        path: "/centers/details/:centerId",
+        element: <CenterDetailsPage />
+    },
+    {
         path: "/forms.new",
         element: <NewFormPage />
     },
@@ -60,6 +71,10 @@ const router = createBrowserRouter([
     {
         path: "/reset-password/:token",
         element: <ResetPassword />
+    },
+    {
+        path: "/classes/details/:classId",
+        element: <ClassDetailsPage />
     }
 ])
 

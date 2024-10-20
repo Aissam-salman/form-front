@@ -1,61 +1,32 @@
-import {forwardRef, HTMLAttributes, useState} from "react";
 import {cn} from "@/lib/utils.ts";
 
-interface EditableTitleProps extends HTMLAttributes<HTMLHeadingElement> {
-    label: string;
+interface TitleProps {
+    children?: React.ReactNode;
     className?: string;
 }
 
-export const Title = forwardRef<HTMLHeadingElement, EditableTitleProps>(({label, className, ...props}, ref) => {
+export const Title = ({children, className}: TitleProps) => {
     return (
-        <h1 ref={ref} className={cn("text-4xl font-bold mb-4", className)} {...props}>
-            {label}
+        <h1  className={cn("text-4xl font-bold mb-4", className)}>
+            {children}
         </h1>
-    );
-});
-
-export const Title2 = ({label}: EditableTitleProps) => {
-    const [isEditing, setIsEditing] = useState(true);
-    const [title, setTitle] = useState(label);
-
-    return (
-        <>
-            {isEditing ? (
-                <input
-                    className="text-2xl font-semibold mb-3 w-full"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    onBlur={() => setIsEditing(false)}
-                    autoFocus
-                />
-            ) : (
-                <h2 className="text-2xl font-semibold mb-3" onClick={() => setIsEditing(true)}>
-                    {title}
-                </h2>
-            )}
-        </>
     );
 };
 
-export const Title3 = ({label}: EditableTitleProps) => {
-    const [isEditing, setIsEditing] = useState(true);
-    const [title, setTitle] = useState(label);
+export const Title2 = ({children, className}: TitleProps) => {
 
     return (
-        <>
-            {isEditing ? (
-                <input
-                    className="text-xl font-semibold mb-2 w-full"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    onBlur={() => setIsEditing(false)}
-                    autoFocus
-                />
-            ) : (
-                <h3 className="text-xl font-semibold mb-2" onClick={() => setIsEditing(true)}>
-                    {title}
+                <h2 className={cn("text-2xl font-semibold mb-3", className)}>
+                    {children}
+                </h2>
+    );
+};
+
+export const Title3 = ({children, className}: TitleProps) => {
+
+    return (
+                <h3 className={cn("text-xl font-semibold mb-2", className)}>
+                    {children}
                 </h3>
-            )}
-        </>
     );
 };
