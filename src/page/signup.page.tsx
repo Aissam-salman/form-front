@@ -27,14 +27,19 @@ const RegisterSchema = z.object({
     password: z.string({
         required_error: "Please enter password.",
     }),
+    confirmPassword: z.string({
+        required_error: "Please retype the password.",
+    }),
     role: z.string({
-        required_error: "Please select an role.",
+        required_error: "Please select a role.",
     }),
     phone_number: z.string({
-        required_error: "Please enter phone number valid.",
+        required_error: "Please enter a valid phone number.",
     }).max(10),
+}).refine((data) => data.password === data.confirmPassword, {
+    message: "Les mots de passe ne correspondent pas",
+    path: ["confirmPassword"],
 })
-
 
 export function SignupPage() {
 
@@ -79,7 +84,7 @@ export function SignupPage() {
     return (
         <div className="w-full min-h-screen flex flex-col relative">
             <Navbar/>
-            <div className="flex items-center justify-center py-12">
+            <div className="flex items-center justify-center py-4">
                 <Card className="mx-auto">
                     <CardHeader>
                         <CardTitle className="text-xl">Inscription</CardTitle>
@@ -127,7 +132,7 @@ export function SignupPage() {
                                                 Email
                                             </FormLabel>
                                             <FormControl>
-                                                <Input type="email" placeholder="m@exemple.com" {...field} />
+                                                <Input type="email" placeholder="mail@exemple.com" {...field} />
                                             </FormControl>
                                             <FormMessage/>
                                         </FormItem>
@@ -141,11 +146,27 @@ export function SignupPage() {
                                                 Mot de passe
                                             </FormLabel>
                                             <FormControl>
-                                                <Input type="password"  {...field} />
+                                                <Input type="password" {...field} />
                                             </FormControl>
                                             <FormMessage/>
                                         </FormItem>
-                                    )}/>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="confirmPassword"
+                                    render={({field}) => (
+                                        <FormItem>
+                                            <FormLabel>
+                                                Retaper mot de passe
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Input type="password" {...field} />
+                                            </FormControl>
+                                            <FormMessage/>
+                                        </FormItem>
+                                    )}
+                                />
                                 <FormField
                                     control={form.control}
                                     name="phone_number"

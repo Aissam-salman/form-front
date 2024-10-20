@@ -7,7 +7,7 @@ interface LogoProps {
 
 const Logo = ({className}: LogoProps) => {
     return (
-        <div className={cn("font-jim-logo text-6xl p-4", className)}>
+        <div className={cn("font-jim-logo text-6xl p-2", className)}>
             <Link to={"/"}>
                 L
             </Link>
