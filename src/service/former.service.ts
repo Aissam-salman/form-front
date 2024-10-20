@@ -7,6 +7,11 @@ class FormerService {
     delete(id: string) {
         return Api.delete(`/users/${id}`)
     }
+
+    getOne(id: string) {
+        return Api.get(`/users/${id}`);
+
+    }
 }
 
 export default new FormerService();

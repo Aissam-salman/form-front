@@ -1,6 +1,5 @@
 import Api from "@/api.ts";
 import {CreatePath} from "@/dto/CreatePath.ts";
-import { Candidate } from "@/types/Candidate";
 
 
 class ClasseService {
@@ -13,14 +12,17 @@ class ClasseService {
     }
 
     getOne(id: string) {
+        console.log(Api.get(`/classes/${id}`));
         return Api.get(`/classes/${id}`)
     }
 
     delete(id: string) {
         return Api.delete(`/classes/${id}`)
     }
-    addCandidateToClasse(classeId: string, candidate: Candidate) {
-        return Api.post(`/classes/${classeId}/candidates`, candidate);
+
+    addCandidateToClasse(classeId: string | undefined, candidateIds: string[]) {
+        console.log(classeId, candidateIds);
+        return Api.post(`/classes/${classeId}/candidates`, candidateIds);
     }
 }
 

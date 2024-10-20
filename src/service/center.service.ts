@@ -13,7 +13,7 @@ class CenterService {
         return Api.delete(`/centers/${id}`);
     }
     getOne(id: string) {
-        return Api.get(`/centers/details/${id}`);
+        return Api.get(`/centers/${id}`);
     }
 }
 

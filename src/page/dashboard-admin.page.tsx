@@ -195,7 +195,7 @@ const DashboardAdminPage = () => {
     }, [activeTab]);
 
     return (
-        <div className="flex h-screen bg-gray-100">
+        <div className="flex h-screen bg--100">
             <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} menuItems={menuItems}/>
             <main className="flex-1 overflow-y-auto">
                 <HeaderDashboard menuItems={menuItems} activeTab={activeTab}/>

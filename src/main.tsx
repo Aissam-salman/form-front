@@ -1,4 +1,4 @@
-import {StrictMode} from 'react'
+import  {StrictMode} from 'react'
 import {createRoot} from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
@@ -7,7 +7,6 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {LoginPage} from "@/page/login.page.tsx";
 import {SignupPage} from "@/page/signup.page.tsx";
 import CandidatePage from "@/page/candidate.page.tsx";
-import ForgotPage from "@/page/forgot.page.tsx";
 import DashboardAdminPage from "@/page/dashboard-admin.page.tsx";
 import CandidateDetailsPage from "@/page/candidate-details.page.tsx";
 import NewFormPage from './page/new-form.page.tsx';
