@@ -50,7 +50,7 @@ const FormTabContent: React.FC<FormTabContentProps> = ({columns, forms, isLoadin
                                 onChange={handleSearchChange}
                             />
                         </div>
-                            <Button className="self-end" onClick={() => navigate("/forms.new")}>
+                            <Button className="self-end" onClick={() => navigate("/forms/prepa-competence")}>
                                 <SquarePlus className="h-5 w-5"/>
                             </Button>
                     </div>

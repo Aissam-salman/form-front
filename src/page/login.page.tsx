@@ -21,6 +21,7 @@ import AuthService from "@/service/auth.service.ts";
 import {toast} from "sonner"
 import {Toaster} from "@/components/ui/sonner.tsx";
 import {Role} from "@/types/Role.ts";
+import {useEffect} from "react";
 
 const LoginSchema = z.object({
     email: z.string({
@@ -29,8 +30,16 @@ const LoginSchema = z.object({
     password: z.string(),
 })
 
+
 export const LoginPage = () => {
-    //TODO: add event to login and redirect
+    const token = useStore((state) => state.token);
+    const id = useStore((state) => state.id);
+    const role = useStore((state) => state.role);
+    const setToken = useStore((state) => state.setToken);
+    const setId = useStore((state) => state.setId);
+    const setRole = useStore((state) => state.setRole);
+
+    const navigate = useNavigate();
     const form = useForm<z.infer<typeof LoginSchema>>({
         resolver: zodResolver(LoginSchema),
         defaultValues: {
@@ -39,14 +48,14 @@ export const LoginPage = () => {
         }
     });
 
-    //TODO: add verif isConnected before & redirect to home if connected
+    useEffect(() => {
+        if(token) {
+            if (role && Object.values(Role).includes(role as Role) && id != null) {
+                handleRedirect({ id: id as number, role: role as Role });
+            }
+        }
+    },[token,id, role])
 
-    const setToken = useStore((state) => state.setToken);
-    const setId = useStore((state) => state.setId);
-    const setRole = useStore((state) => state.setRole);
-
-
-    const navigate = useNavigate();
 
     const handleRedirect = ({id, role}: { id: number, role: Role }) => {
         switch (role) {
@@ -63,6 +72,7 @@ export const LoginPage = () => {
                 throw new Error("Role undefined")
         }
     }
+
 
     const handleLogin = async (data: z.infer<typeof LoginSchema>) => {
 

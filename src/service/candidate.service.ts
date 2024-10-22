@@ -8,7 +8,7 @@ class CandidateService {
         return Api.delete(`/users/${id}`)
     }
 
-    getOne(id: string) {
+    getOne(id: number | string | null) {
         return Api.get(`/users/${id}`);
     }
 }

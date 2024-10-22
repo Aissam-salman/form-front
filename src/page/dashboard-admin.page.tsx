@@ -172,6 +172,9 @@ const DashboardAdminPage = () => {
     }
 
 
+    const userId = useStore((state) => state.id);
+
+    console.log(userId)
 
     useEffect(() => {
         console.log(activeTab)
