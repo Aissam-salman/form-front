@@ -2,10 +2,17 @@ import {Input} from "@/components/ui/input.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {Textarea} from "@/components/ui/textarea.tsx";
 import {Checkbox} from "@/components/ui/checkbox.tsx";
+import {Control, FieldErrors, FieldValues} from "react-hook-form";
 
-interface InputFormProps {
+interface InputFormProps<
+    TFieldValues extends FieldValues = FieldValues,
+    TContext = unknown
+> {
     label: string;
     type?: string;
+    name: string;
+    control: Control<TFieldValues, TContext>;
+    errors?: FieldErrors<TFieldValues>;
     placeholder?: string;
     className?: string;
 }
@@ -55,20 +62,20 @@ export const CheckboxForm = ({label}: InputFormProps) => {
 }
 
 export const FileForm = ({label}: InputFormProps) => {
-            return (
-                <div className="space-y-2">
-                     <Label htmlFor="file">{label}</Label>
-                     <Input id="file" type="file" />
-                 </div>
-             )
+    return (
+        <div className="space-y-2">
+            <Label htmlFor="file">{label}</Label>
+            <Input id="file" type="file"/>
+        </div>
+    )
 }
 
 export const ImgForm = ({label}: InputFormProps) => {
-            return (
-                <div className="space-y-2">
-                    <Label htmlFor="image">{label}</Label>
-                    <Input id="image" type="file" accept="image/*" />
-                </div>
-            )
+    return (
+        <div className="space-y-2">
+            <Label htmlFor="image">{label}</Label>
+            <Input id="image" type="file" accept="image/*"/>
+        </div>
+    )
 }
 
