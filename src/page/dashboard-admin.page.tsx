@@ -29,10 +29,10 @@ import formService from "@/service/form.service.ts";
 
 const DashboardAdminPage = () => {
     const menuItems = [
-        {id: "centers", label: "Centres", icon: HomeIcon},
-        {id: "formers", label: "Formateurs", icon: BookIcon},
         {id: "candidates", label: "Candidats", icon: UsersIcon},
         {id: "classes", label: "Classes", icon: BookOpenIcon},
+        {id: "formers", label: "Formateurs", icon: BookIcon},
+        {id: "centers", label: "Centres", icon: HomeIcon},
         {id: "forms", label: "Forms", icon: FileTextIcon},
     ];
 

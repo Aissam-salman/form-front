@@ -6,10 +6,10 @@ const CenterPage = () => {
     return (
         <div>
                 <span>
-                    centerd: {centerId}
+                    centerId: {centerId}
                 </span>
 
-            <h1>"Page du Center"</h1>
+            <h1>Page du Center</h1>
         </div>
     );
 };

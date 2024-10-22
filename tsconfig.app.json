@@ -25,7 +25,10 @@
     "paths": {
       "@/*": [
         "./src/*"
-      ]
+      ],
+      "*":[
+          " <NotFoundPage /> " // Page personnalisée pour les erreurs 404
+      ],
     },
   },
   "include": [

@@ -16,6 +16,11 @@ import ForgotPassword from './components/ForgotPassword.tsx';
 import ClassDetailsPage from "@/page/class-details.page.tsx";
 import CenterPage from '@/page/center.page.tsx';
 import CenterDetailsPage from '@/page/center-details.page.tsx';
+import FormerPage from '@/page/former.page.tsx';
+import FormerDetailsPage from '@/page/former-details.page.tsx';
+import NotFoundPage from './page/NotFoundPage.tsx';
+
+
 
 
 const router = createBrowserRouter([
@@ -40,16 +45,20 @@ const router = createBrowserRouter([
         element: <CandidatePage />
     },
     {
+        path: "/candidate/details/:candidateId",
+        element: <CandidateDetailsPage />
+    },
+    {
         path: "/admin",
         element: <DashboardAdminPage />
     },
     {
         path: "/former/:formerId",
-        element: <h1>Former page</h1>
+        element: <FormerPage />
     },
     {
-        path: "/candidate/details/:candidateId",
-        element: <CandidateDetailsPage />
+        path: "/former/details/:candidateId",
+        element: <FormerDetailsPage />
     },
     {
         path: "/center/:centerId",
@@ -74,18 +83,22 @@ const router = createBrowserRouter([
     {
         path: "/classes/details/:classId",
         element: <ClassDetailsPage />
-    }
-])
+    },
+    {
+        path: '*',
+        element: <NotFoundPage />, // Page 404
+    },
+]);
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-       <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <RouterProvider router={router} />
-      </ThemeProvider>
-  </StrictMode>,
+    <StrictMode>
+        <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+            >
+                <RouterProvider router={router} />
+        </ThemeProvider>
+    </StrictMode>,
 )
