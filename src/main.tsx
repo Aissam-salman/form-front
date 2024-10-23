@@ -16,6 +16,7 @@ import ClassDetailsPage from "@/page/class-details.page.tsx";
 import CenterPage from "@/page/center.page.tsx";
 import CenterDetailsPage from "@/page/center-details.page.tsx";
 import ForgotPassword from "@/page/forgot.page.tsx";
+import NotFoundPage from "./page/NotFoundPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -73,6 +74,10 @@ const router = createBrowserRouter([
   {
     path: "/classes/details/:classId",
     element: <ClassDetailsPage />,
+  },
+  {
+    path: '*',
+    element: <NotFoundPage />, // Page 404
   },
 ]);
 
