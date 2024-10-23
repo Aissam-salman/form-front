@@ -1,19 +1,14 @@
-import { useState } from 'react';
-import { Button } from "@/components/ui/button.tsx";
-import { Input } from "@/components/ui/input.tsx";
-import { Label } from "@/components/ui/label.tsx";
-import { Checkbox } from "@/components/ui/checkbox.tsx";
-import { Workshop } from "@/types/Workshop.ts";
-import { AdhesionFormData } from '@/types/Adhesion.ts';
+import React, { useState } from 'react';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { toast } from "sonner";
 import fakeData from '@/data/fakeData.json';
+import { AdhesionFormData } from '@/types/Adhesion.ts';
+import { useNavigate } from 'react-router-dom';
 
-interface Workshop1CardProps {
-  workshop: Workshop;
-  onSave: (workshop: Workshop) => void;
-  onChange: (workshop: Workshop) => void;
-}
-
-const Workshop1Card: React.FC<Workshop1CardProps> = ({ workshop, onSave }) => {
+const AdhesionForm = () => {
   const [formData, setFormData] = useState<AdhesionFormData>({
     centreAFPA: '',
     agenceFranceTravail: '',
@@ -35,7 +30,7 @@ const Workshop1Card: React.FC<Workshop1CardProps> = ({ workshop, onSave }) => {
     motifNonAdhesion: '',
     metiersCibles: '',
   });
-
+const navigate = useNavigate();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type } = e.target;
     setFormData(prev => ({
@@ -46,12 +41,8 @@ const Workshop1Card: React.FC<Workshop1CardProps> = ({ workshop, onSave }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const updatedWorkshop: Workshop = {
-      ...workshop,
-      startDate: formData.dateEntree,
-      learnings: formData.objectifsBeneficiaire,
-    };
-    onSave(updatedWorkshop);
+    toast.success("Formulaire d'adhésion enregistré");
+    navigate('/candidate/${id}');
   };
 
   const fillWithFakeData = () => {
@@ -65,7 +56,11 @@ const Workshop1Card: React.FC<Workshop1CardProps> = ({ workshop, onSave }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="max-w-4xl mx-auto p-6 space-y-6">
+      <Button type="button" onClick={fillWithFakeData} className="mb-4">
+        Remplir avec des données factices
+      </Button>
+
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Label htmlFor="centreAFPA">Centre AFPA de :</Label>
@@ -139,13 +134,10 @@ const Workshop1Card: React.FC<Workshop1CardProps> = ({ workshop, onSave }) => {
       </div>
 
       <div className="flex space-x-4">
-        <Button type="button" onClick={fillWithFakeData} className="mb-4">
-          Remplir avec des données factices
-        </Button>
-        <Button type="submit">Enregistrer</Button>
+        <Button type="submit">Enregistrer l'adhésion</Button>
       </div>
     </form>
   );
 };
 
-export default Workshop1Card;
+export default AdhesionForm;

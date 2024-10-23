@@ -1,6 +1,6 @@
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import { Workshop } from '@/types/Workshop';
+import { Textarea } from '@/components/ui/textarea.tsx';
+import { Button } from '@/components/ui/button.tsx';
+import { Workshop } from '@/types/Workshop.ts';
 
 interface WorkshopCardProps {
   workshop: Workshop;
@@ -10,7 +10,7 @@ interface WorkshopCardProps {
 
 const WorkshopCard: React.FC<WorkshopCardProps> = ({ workshop, onSave, onChange }) => {
   return (
-    <div className="p-12 min-w-[80%] rounded-xl shadow-xl">
+    <div className="p-12 min-w-[80%] mx-auto" >
       <div className="p-12 max-w-4xl mx-auto bg-white shadow-md rounded-lg">
         <h2 className="text-2xl font-bold mb-4">
            {workshop.name}

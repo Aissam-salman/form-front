@@ -1,6 +1,6 @@
 import React from 'react';
-import {Button} from '@/components/ui/button';
-import {Separator} from "@/components/ui/separator";
+import {Button} from '@/components/ui/button.tsx';
+import {Separator} from "@/components/ui/separator.tsx";
 
 
 interface SidebarProps {
@@ -16,7 +16,7 @@ const Sidebar: React.FC<SidebarProps> = ({ items, activeWorkshop, setActiveWorks
 
 
     return (
-        <aside className="w-64 bg-white shadow-md min-h-[calc(100vh-4rem)] ">
+        <aside className="w-64 bg-white shadow-md min-h-[calc(100vh-4rem)] fixed h-full ">
         
 
             <nav className="p-4 space-y-2">
@@ -36,6 +36,7 @@ const Sidebar: React.FC<SidebarProps> = ({ items, activeWorkshop, setActiveWorks
                         <Separator className="my-2" />
                     </div>
                 ))}
+
             </nav>
         </aside>
     );

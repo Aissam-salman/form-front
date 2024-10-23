@@ -1,34 +1,52 @@
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Workshop } from "@/types/Workshop";
+import { Input } from "@/components/ui/input.tsx";
+import { Textarea } from "@/components/ui/textarea.tsx";
+import { Checkbox } from "@/components/ui/checkbox.tsx";
+import { Label } from "@/components/ui/label.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { Workshop } from "@/types/Workshop.ts";
 
+interface SkillStatus {
+  communiquerEcrit: boolean;
+  communiquerOral: boolean;
+  utiliserMathematiques: boolean;
+  utiliserOutils: boolean;
+  recueillirTraiterInfo: boolean;
+  travaillerGroupe: boolean;
+  travaillerAutonomie: boolean;
+  connaitreReglesSecurite: boolean;
+  realiserActivitesPratiques: boolean;
+  organiserActivitePro: boolean;
+  faireChoixParcours: boolean;
+}
 
+interface Workshop6CardProps {
+  workshop: Workshop;
+  onSave: (workshop: Workshop) => void;
+  onChange: (workshop: Workshop) => void;
+  skillStatus: SkillStatus;
+}
 
-interface WorkshopCardProps {
-    workshop: Workshop;
-    onSave: (workshop: Workshop) => void;
-    onChange: (workshop: Workshop) => void;
-  }
-
-  const skills = {
-    communiquerEcrit: "Communiquer à l’écrit dans un contexte professionnel",
-    communiquerOral: "Communiquer à l’oral dans un contexte professionnel",
-    utiliserMathematiques: "Utiliser les mathématiques dans le cadre d’une pratique professionnelle",
-    utiliserOutils: "Utiliser les outils numériques, découvrir les usages et la culture du numérique (plateforme numérique pour se former)",
-    recueillirTraiterInfo: "Recueillir et traiter de l’information",
-    travaillerGroupe: "Travailler en groupe et en équipe",
-    travaillerAutonomie: "Travailler en autonomie et réaliser un objectif individuel",
-    connaitreReglesSecurite: "Connaître les règles de sécurité, l’environnement et la prévention santé en lien avec le métier visé",
-    realiserActivitesPratiques: "Réaliser des activités pratiques en lien avec le métier visé",
-    organiserActivitePro: "S’organiser dans son activité professionnelle",
-    faireChoixParcours: "Faire des choix et construire son parcours de formation",
+interface Phase4Data {
+  atelier6: {
+    dateDebut: string;
+    dateFin: string;
+    heures: string;
+    metierVise: string;
+    formations: Array<{
+      intitule: string;
+      organisme: string;
+      lieu: string;
+      dateEntree: string;
+    }>;
+    formationPresenteAuPRF: boolean;
+    planFormationArgumente: string;
   };
-const Workshop6Card:React.FC<WorkshopCardProps>  = ({ workshop, onSave, onChange,skillStatus }) => {
-  const [phase4Data, setPhase4Data] = useState({
+  competencesDeveloppees: SkillStatus;
+}
+
+const Workshop6Card: React.FC<Workshop6CardProps> = ({ workshop, onSave, skillStatus }) => {
+  const [phase4Data, setPhase4Data] = useState<Phase4Data>({
     atelier6: {
       dateDebut: "",
       dateFin: "",
@@ -42,66 +60,56 @@ const Workshop6Card:React.FC<WorkshopCardProps>  = ({ workshop, onSave, onChange
       formationPresenteAuPRF: false,
       planFormationArgumente: "",
     },
-    competencesDeveloppees: {
-      communiquerEcrit: false,
-      communiquerOral: false,
-      utiliserMathematiques: false,
-      utiliserOutils: false,
-      recueillirTraiterInfo: false,
-      travaillerGroupe: false,
-      travaillerAutonomie: false,
-      connaitreReglesSecurite: false,
-      realiserActivitesPratiques: false,
-      organiserActivitePro: false,
-      faireChoixParcours: false,
-    },
+    competencesDeveloppees: skillStatus,
   });
-  
 
-  const handleInputChange = (e, section, field, index = null) => {
-    const { value, type, checked } = e.target;
-    setPhase4Data((prevData) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    section: string,
+    field: string,
+    index: number | null = null
+  ) => {
+    const { value, type } = e.target;
+    setPhase4Data(prev => {
       if (index !== null) {
-        const newFormations = [...prevData.atelier6.formations];
+        const newFormations = [...prev.atelier6.formations];
         newFormations[index] = { ...newFormations[index], [field]: value };
         return {
-          ...prevData,
+          ...prev,
           atelier6: {
-            ...prevData.atelier6,
+            ...prev.atelier6,
             formations: newFormations,
           },
         };
-      } else if (type === "checkbox") {
-        return {
-          ...prevData,
-          [section]: {
-            ...prevData[section],
-            [field]: checked,
-          },
-        };
-      } else {
-        return {
-          ...prevData,
-          [section]: {
-            ...prevData[section],
-            [field]: value,
-          },
-        };
       }
+      return {
+        ...prev,
+        [section]: {
+          ...prev[section as keyof Phase4Data],
+          [field]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
+        },
+      };
     });
-    onDataChange(phase4Data);
-   
+  };
+
+  const handleSave = () => {
+    const updatedWorkshop: Workshop = {
+      ...workshop,
+      startDate: phase4Data.atelier6.dateDebut,
+      endDate: phase4Data.atelier6.dateFin,
+      learnings: phase4Data.atelier6.planFormationArgumente,
+    };
+    onSave(updatedWorkshop);
   };
 
   return (
     <div className="p-12 min-w-[80%] mx-auto">
       <div className="p-12 max-w-6xl mx-auto bg-white shadow-md rounded-lg">
-        <h2 className="text-2xl font-bold">PHASE 4 : Concrétiser son projet</h2>
 
-        <div className="border p-8 rounded-md my-8">
-          <h3 className="text-xl font-semibold mb-2">
+          <h2 className="text-xl font-semibold mb-2">
             Atelier 6 : Concrétiser son projet de professionnalisation
-          </h3>
+          </h2>
+        <div className="border p-8 rounded-md my-8">
           <div className="grid grid-cols-2 gap-4">
             <div>
               <Label htmlFor="dateDebut">Du :</Label>
@@ -211,45 +219,23 @@ const Workshop6Card:React.FC<WorkshopCardProps>  = ({ workshop, onSave, onChange
             Les compétences développées pendant Prépa compétences et mises à
             jour dans le profil de compétences
           </h3>
-          {/* {Object.entries(phase4Data.competencesDeveloppees).map(
-            ([key, value]) => (
-              <Label key={key} className="flex items-center mt-2">
-                <Checkbox
-                  checked={value}
-                  onCheckedChange={(checked) =>
-                    handleInputChange(
-                      { target: { type: "checkbox", checked } },
-                      "competencesDeveloppees",
-                      key
-                    )
-                  }
+          <div className="space-y-4">
+            {Object.keys(skillStatus).map((key) => (
+              <div key={key} className="flex items-center">
+                <input
+                  type="checkbox"
+                  checked={skillStatus[key as keyof SkillStatus]}
+                  onChange={() => {}}
+                  className="mr-2"
                 />
-                <span className="ml-2">
-                  {key
-                    .replace(/([A-Z])/g, " $1")
-                    .replace(/^./, (str) => str.toUpperCase())}
-                </span>
-              </Label>
-            )
-          )} */}
-
-        <div className="space-y-4">
-        {Object.keys(skills).map((key) => (
-          <div key={key} className="flex items-center">
-            <input
-              type="checkbox"
-              checked={skillStatus[key]}
-              onChange={() => {}}
-              className="mr-2"
-            />
-            <label className="text-sm">{skills[key]}</label>
+                <label className="text-sm">{key}</label>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
         </div>
-        <Button onClick={() => onSave(workshop)} className="w-full">
-            Enregistrer
-          </Button>
+        <Button onClick={() => onSave && onSave(workshop)} className="w-full">
+          Enregistrer
+        </Button>
       </div>
     </div>
   );

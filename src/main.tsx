@@ -17,7 +17,9 @@ import CenterPage from "@/page/center.page.tsx";
 import CenterDetailsPage from "@/page/center-details.page.tsx";
 import ForgotPassword from "@/page/forgot.page.tsx";
 import NotFoundPage from "./page/NotFoundPage.tsx";
-
+import BilanSortie from "@/page/BilanSortie.tsx";
+import Adhesion from "@/page/Adhesion.tsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const router = createBrowserRouter([
   {
@@ -80,11 +82,22 @@ const router = createBrowserRouter([
     path: '*',
     element: <NotFoundPage />, // Page 404
   },
+    {
+      path: "/bilan-sortie",
+      element: <BilanSortie />,
+    },
+    {
+      path: "/candidate",
+      element: <Adhesion />,
+    },
 
 ]);
+const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
+    <QueryClientProvider client={queryClient}>
+
     <ThemeProvider
       attribute="class"
       defaultTheme="system"
@@ -93,5 +106,6 @@ createRoot(document.getElementById("root")!).render(
     >
       <RouterProvider router={router} />
     </ThemeProvider>
+    </QueryClientProvider>
   </StrictMode>
 );
