@@ -1,0 +1,118 @@
+{
+  "centreAFPA": "Brest",
+  "agenceFranceTravail": "Brest Europe",
+  "nomReferentAFPA": "Jean Dupont",
+  "telephoneReferentAFPA": "0123456789",
+  "mailReferentAFPA": "jean.dupont@afpa.fr",
+  "nomConseillerFranceTravail": "Marie Martin",
+  "telephoneConseillerFranceTravail": "0987654321",
+  "mailConseillerFranceTravail": "marie.martin@francetravail.fr",
+  "nomReferentAutre": "Pierre Durand",
+  "nomBeneficiaire": "Dubois",
+  "prenomBeneficiaire": "Sophie",
+  "identifiantBeneficiaire": "SD123456",
+  "telephoneBeneficiaire": "0654321987",
+  "mailBeneficiaire": "sophie.dubois@email.com",
+  "objectifsBeneficiaire": "Reconversion professionnelle dans le domaine du numérique",
+  "adhesion": true,
+  "dateEntree": "2024-03-15",
+  "motifNonAdhesion": "Non applicable",
+  "metiersCibles": "Développeur web, Data Analyst",
+  "phase1": {
+    "atelier1": {
+      "dateDebut": "2024-03-16",
+      "dateFin": "2024-03-17",
+      "heures": "9h-17h",
+      "ceQueJeRetiens": "Importance de la communication dans le milieu professionnel",
+      "commentairesIntervenant": "Participation active et bonne compréhension des enjeux"
+    }
+  },
+  "phase2": {
+    "atelier2": {
+      "metier": "Développeur Web",
+      "dateDebut": "2024-03-18",
+      "dateFin": "2024-03-19",
+      "heures": "9h-17h",
+      "moyenDecouverte": "Stage d'observation",
+      "entreprise": "TechCorp",
+      "choixMetierConfirme": "Oui",
+      "competences": ["HTML", "CSS", "JavaScript"]
+    },
+    "atelier9": {
+      "dateDebut": "2024-03-20",
+      "dateFin": "2024-03-21",
+      "heures": "9h-17h",
+      "moyen": "Atelier pratique",
+      "ceQueJeRetiens": "Importance de la veille technologique",
+      "commentairesIntervenant": "Bonne implication dans les exercices pratiques"
+    },
+    "atelier10": {
+      "dateDebut": "2024-03-22",
+      "dateFin": "2024-03-23",
+      "heures": "9h-17h",
+      "moyen": "Simulation d'entretien",
+      "ceQueJeRetiens": "Techniques pour bien se présenter en entretien",
+      "commentairesIntervenant": "Progrès notables dans la présentation orale"
+    }
+  },
+  "phase3": {
+    "atelier3": {
+      "dateDebut": "2024-03-24",
+      "dateFin": "2024-03-25",
+      "heures": "9h-17h",
+      "ceQueJeRetiens": "Maîtrise des outils numériques de base",
+      "commentairesIntervenant": "Bonne progression dans l'utilisation des logiciels"
+    },
+    "atelier4": {
+      "dateDebut": "2024-03-26",
+      "dateFin": "2024-03-27",
+      "heures": "9h-17h",
+      "ceQueJeRetiens": "Importance de la logique dans la programmation",
+      "commentairesIntervenant": "Capacité d'analyse en amélioration"
+    },
+    "atelier5": {
+      "dateDebut": "2024-03-28",
+      "dateFin": "2024-03-29",
+      "heures": "9h-17h",
+      "ceQueJeRetiens": "Stratégies pour sécuriser son parcours professionnel",
+      "commentairesIntervenant": "Bonne compréhension des enjeux de formation continue"
+    },
+    "atelier8": {
+      "dateDebut": "2024-03-30",
+      "dateFin": "2024-03-31",
+      "heures": "9h-17h",
+      "ceQueJeRetiens": "Fonctionnement et avantages du CPF",
+      "commentairesIntervenant": "Intérêt marqué pour les possibilités offertes par le CPF"
+    }
+  },
+  "phase4": {
+    "atelier6": {
+      "dateDebut": "2024-04-01",
+      "dateFin": "2024-04-02",
+      "heures": "9h-17h",
+      "metierVise": "Développeur Full Stack",
+      "formations": [
+        { "intitule": "Formation Développeur Web", "organisme": "AFPA", "lieu": "Brest", "dateEntree": "2024-09-01" },
+        { "intitule": "Bootcamp JavaScript Avancé", "organisme": "CodeAcademy", "lieu": "En ligne", "dateEntree": "2024-06-15" },
+        { "intitule": "Formation React et Node.js", "organisme": "OpenClassrooms", "lieu": "En ligne", "dateEntree": "2024-11-01" }
+      ],
+      "formationPresenteAuPRF": true,
+      "planFormationArgumente": "Parcours de formation complet pour devenir développeur full stack, combinant formations en présentiel et en ligne"
+    }
+  },
+  "dateBilan": "2024-03-31",
+  "syntheseParcours": "Le bénéficiaire a complété avec succès tous les ateliers. Il est prêt pour une formation en développement web.",
+  "rdvFT": "2024-04-15",
+  "pointsVigilance": "Besoin de renforcer les compétences en anglais technique.",
+  "commentairesBeneficiaire": "Je me sens confiant pour commencer ma formation en développement web.",
+  "termeDuDispositif": true,
+  "suiviNecessaire": "oui",
+  "dateProposee": "2024-05-01",
+  "sortieAnticipeePositive": false,
+  "dateSortie": "",
+  "motifSortie": "",
+  "abandon": false,
+  "dateAbandon": "",
+  "motifAbandon": "",
+  "dateSignature": "2024-03-31"
+}

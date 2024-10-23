@@ -18,6 +18,7 @@ import CenterDetailsPage from "@/page/center-details.page.tsx";
 import ForgotPassword from "@/page/forgot.page.tsx";
 import NotFoundPage from "./page/NotFoundPage.tsx";
 
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -79,6 +80,7 @@ const router = createBrowserRouter([
     path: '*',
     element: <NotFoundPage />, // Page 404
   },
+
 ]);
 
 createRoot(document.getElementById("root")!).render(
