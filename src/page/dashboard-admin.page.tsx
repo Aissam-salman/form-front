@@ -180,16 +180,16 @@ const DashboardAdminPage = () => {
         console.log(activeTab)
         switch (activeTab) {
             case menuItems[0].id:
-                fetchCandidate();
+                fetchCenters();
                 break;
             case menuItems[1].id:
-                fetchClasses();
-                break;
-            case menuItems[2].id:
                 fetchFormers();
                 break;
+            case menuItems[2].id:
+                fetchCandidate();
+                break;
             case menuItems[3].id:
-                fetchCenters();
+                fetchClasses();
                 break;
             case menuItems[4].id:
                 fetchForms();
