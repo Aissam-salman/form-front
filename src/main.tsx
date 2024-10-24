@@ -18,7 +18,10 @@ import ForgotPassword from "@/page/forgot.page.tsx";
 import NotFoundPage from "./page/NotFoundPage.tsx";
 import BilanSortie from "@/page/BilanSortie.tsx";
 import Adhesion from "@/page/Adhesion.tsx";
-import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import GeneratePDF from "@/page/generate.page.tsx";
+
 
 const router = createBrowserRouter([
     {
@@ -86,6 +89,10 @@ const router = createBrowserRouter([
         path: "/candidate",
         element: <Adhesion/>,
     },
+  {
+    path: "/generate-pdf",
+    element: <GeneratePDF />,
+  }
 
 ]);
 const queryClient = new QueryClient();

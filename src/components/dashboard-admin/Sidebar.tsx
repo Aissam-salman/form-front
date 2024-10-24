@@ -1,7 +1,8 @@
 import React from 'react';
 import {Button} from '@/components/ui/button.tsx';
 import Logo from "@/components/logo.tsx";
-import {LucideProps} from "lucide-react";
+import { LucideProps, Printer} from "lucide-react";
+import {useNavigate} from "react-router-dom";
 
 interface MenuItem {
     id: string;
@@ -20,6 +21,7 @@ const Sidebar: React.FC<SidebarProps> = ({ menuItems, activeTab, setActiveTab })
     if (!activeTab) {
         activeTab = menuItems[0].id;
     }
+const navigate = useNavigate();
 
     return (
         <aside className="w-64 bg-white shadow-md">
@@ -37,6 +39,13 @@ const Sidebar: React.FC<SidebarProps> = ({ menuItems, activeTab, setActiveTab })
                     </Button>
                 ))}
             </nav>
+            <Button variant="default"
+                    onClick={() => navigate("/generate-pdf")}
+                    className="w-full justify-start text-left font-normal fixed bottom-2 left-1 w-64">
+
+                <Printer className={"mx-2"} />  Générer un PDF
+
+            </Button>
         </aside>
     );
 };
