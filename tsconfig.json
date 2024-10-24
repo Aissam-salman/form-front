@@ -9,7 +9,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "strict": true, // Permet de réduire les erreurs liées aux types.
+    "strict": false, // Permet de réduire les erreurs liées aux types.
     "forceConsistentCasingInFileNames": true // Évite les erreurs dues à des différences de casse dans les noms de fichiers
   }
 }

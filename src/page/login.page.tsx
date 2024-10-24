@@ -66,7 +66,7 @@ export const LoginPage = () => {
                 navigate(`/former/${id}`)
                 break;
             case Role.CANDIDATE:
-                navigate(`/candidate/${id}`)
+                navigate(`/candidate`)
                 break;
             default:
                 throw new Error("Role undefined")
