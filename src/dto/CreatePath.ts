@@ -3,6 +3,4 @@ export type CreatePath = {
     former_id: string,
     date_start: number,
     date_end: number,
-
-
 }

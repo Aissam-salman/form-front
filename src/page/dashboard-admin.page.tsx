@@ -69,6 +69,7 @@ const DashboardAdminPage = () => {
         setIsLoading(true);
         try {
             const resp = await candidateService.getAll();
+            console.log(resp.data)
             setCandidates(resp.data);
         } catch (err) {
             console.error(err);
@@ -172,6 +173,9 @@ const DashboardAdminPage = () => {
     }
 
 
+    const userId = useStore((state) => state.id);
+
+    console.log(userId)
 
     useEffect(() => {
         console.log(activeTab)
