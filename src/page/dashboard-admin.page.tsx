@@ -69,6 +69,7 @@ const DashboardAdminPage = () => {
         setIsLoading(true);
         try {
             const resp = await candidateService.getAll();
+            console.log(resp.data)
             setCandidates(resp.data);
         } catch (err) {
             console.error(err);
@@ -180,16 +181,16 @@ const DashboardAdminPage = () => {
         console.log(activeTab)
         switch (activeTab) {
             case menuItems[0].id:
-                fetchCenters();
-                break;
-            case menuItems[1].id:
-                fetchFormers();
-                break;
-            case menuItems[2].id:
                 fetchCandidate();
                 break;
-            case menuItems[3].id:
+            case menuItems[1].id:
                 fetchClasses();
+                break;
+            case menuItems[2].id:
+                fetchFormers();
+                break;
+            case menuItems[3].id:
+                fetchCenters();
                 break;
             case menuItems[4].id:
                 fetchForms();

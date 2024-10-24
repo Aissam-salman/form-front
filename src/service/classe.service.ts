@@ -12,7 +12,6 @@ class ClasseService {
     }
 
     getOne(id: string) {
-        console.log(Api.get(`/classes/${id}`));
         return Api.get(`/classes/${id}`)
     }
 
@@ -20,8 +19,7 @@ class ClasseService {
         return Api.delete(`/classes/${id}`)
     }
 
-    addCandidateToClasse(classeId: string | undefined, candidateIds: string[]) {
-        console.log(classeId, candidateIds);
+    addCandidateToClasse(classeId: string | undefined, candidateIds: string) {
         return Api.post(`/classes/${classeId}/candidates`, candidateIds);
     }
 }
