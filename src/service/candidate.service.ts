@@ -11,5 +11,9 @@ class CandidateService {
     getOne(id: number | string | null) {
         return Api.get(`/users/${id}`);
     }
+
+    getDetail(id: string) {
+        return Api.get(`/users/details/${id}`);
+    }
 }
 export default new CandidateService();

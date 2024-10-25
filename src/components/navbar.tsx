@@ -13,7 +13,6 @@ const Navbar = ({className}: NavbarProps) => {
     const logout = useStore((state) => state.logout);
     const isConnected = useStore((state) => state.isConnected);
 
-    //TODO: add state isConnected ?
     const handleLogout = () => {
         logout();
         navigate("/login");
